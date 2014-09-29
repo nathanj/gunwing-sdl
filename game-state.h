@@ -21,4 +21,5 @@ public:
 
         static void update(std::chrono::milliseconds delta);
         static void draw(Graphics& graphics);
+	static void convertBulletsToMedals();
 };

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "vector.h"
 
-void createMedals(const Vector<float>& position);
+void createMedals(const Vector<float>& position, float factor = 1);
 int p(int percent);
 int rand_between(int a, int b);
 double gaussrand();

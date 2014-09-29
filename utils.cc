@@ -5,10 +5,10 @@
 
 #include "game-state.h"
 
-void createMedals(const Vector<float>& position)
+void createMedals(const Vector<float>& position, float factor)
 {
         float dist = Vector<float>::distance(position, GameState::ship->position());
-	int distance = (500 - static_cast<int>(std::min(400.0f, dist))) / 33;
+	int distance = (500 - static_cast<int>(std::min(400.0f, dist * factor))) / 33;
 	for (int i = 0; i < distance; i++)
 		GameState::medals.emplace_back(position.x + rand_between(0, 32),
                                                position.y + rand_between(0, 32));

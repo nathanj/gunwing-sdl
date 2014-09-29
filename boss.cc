@@ -3,12 +3,15 @@
 #include <cassert>
 #include "game-state.h"
 #include "shrapnel-bomb.h"
+#include "enemy-chunk.h"
+#include "utils.h"
 
 using ms = std::chrono::milliseconds;
 
 Texture Boss::image_;
 
-Boss::Boss(float x, float y)
+Boss::Boss(float x, float y) :
+        healthbar_(health_, max_health_, healthbar_markers_)
 {
         position_ = {x, y};
         direction_ = {0, 1};
@@ -38,6 +41,7 @@ void Boss::update(std::chrono::milliseconds delta)
 {
         time_to_next_bullet_.update(delta);
         invulnerable_.update(delta);
+        healthbar_.update(delta);
 
         for (auto& b : GameState::ship->bullets()) {
                 if (!b.dead() && collides(b)) {
@@ -48,6 +52,7 @@ void Boss::update(std::chrono::milliseconds delta)
 
         if (health_ <= 0) {
                 dead_ = true;
+                die();
                 return;
         }
 
@@ -62,8 +67,8 @@ void Boss::update(std::chrono::milliseconds delta)
                 case THREE:
                         time_to_next_bullet_.reset(ms(50));
                         break;
-		default:
-			assert(0);
+                default:
+                        assert(0);
                 }
                 fireBullet();
         }
@@ -81,6 +86,10 @@ void Boss::update(std::chrono::milliseconds delta)
                 direction_ = {-1, 0};
         }
 
+        if (health_ < healthbar_markers_[(int)form_]) {
+                nextForm();
+        }
+
         // todo -delta
         position_.x += direction_.x * speed_;
         position_.y += direction_.y * speed_;
@@ -89,6 +98,7 @@ void Boss::update(std::chrono::milliseconds delta)
 void Boss::draw(Graphics& graphics)
 {
         graphics.blit(image_, 0, 0, position_.x, position_.y);
+        healthbar_.draw(graphics);
 }
 
 void Boss::fireBullet()
@@ -96,35 +106,59 @@ void Boss::fireBullet()
         if (GameState::ship->dead())
                 return;
 
-        if (form_ == Forms::ONE) {
-		Vector<float> pos = { position_.x + 60, position_.y + 200 };
-		if (!fire_left_)
-			pos = { position_.x + 310, position_.y + 200 };
+        if (form_ == Forms::ONE)
+                fireShrapnel();
+        else
+                fireCircularBullets();
+}
 
-		GameState::enemy_bullets.push_back(
-			std::make_shared<ShrapnelBomb>(
-				pos.x, pos.y, 0, 1, shrapnel_rounds_));
+void Boss::fireShrapnel()
+{
+        Vector<float> pos = { position_.x + 60, position_.y + 200 };
+        if (!fire_left_)
+                pos = { position_.x + 310, position_.y + 200 };
 
-		fire_left_ = !fire_left_;
-		shrapnel_rounds_ += 4;
-	} else {
-		angle_ += 0.03f; // todo - delta
+        GameState::enemy_bullets.push_back(
+                std::make_shared<ShrapnelBomb>(
+                        pos.x, pos.y, 0, 1, shrapnel_rounds_));
 
-		for (int i = 0; i < 4; i++) {
-			GameState::enemy_bullets.push_back(
-				std::make_shared<Bullet>(
-					position_.x + image_.w / 4 - 20,
-					position_.y + 120,
-					cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-					sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-					1.2));
-			GameState::enemy_bullets.push_back(
-				std::make_shared<Bullet>(
-					position_.x + 3*image_.w / 4 + 15,
-					position_.y + 120,
-					cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-					sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-					1.2));
-		}
-	}
+        fire_left_ = !fire_left_;
+        shrapnel_rounds_ += 4;
+}
+
+void Boss::fireCircularBullets()
+{
+        angle_ += 0.03f; // todo - delta
+
+        for (int i = 0; i < 4; i++) {
+                GameState::enemy_bullets.push_back(
+                        std::make_shared<Bullet>(
+                                position_.x + image_.w / 4 - 20,
+                                position_.y + 120,
+                                cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                                sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                                1.2));
+                GameState::enemy_bullets.push_back(
+                        std::make_shared<Bullet>(
+                                position_.x + 3*image_.w / 4 + 15,
+                                position_.y + 120,
+                                cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                                sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                                1.2));
+        }
+}
+
+void Boss::nextForm()
+{
+        form_++;
+        invulnerable_.reset();
+        GameState::convertBulletsToMedals();
+        createChunks(position_, 100);
+}
+
+void Boss::die()
+{
+        createMedals(position_, 2);
+        GameState::convertBulletsToMedals();
+        createChunks(position_, 300);
 }

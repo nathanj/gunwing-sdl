@@ -47,9 +47,9 @@ void EnemyChunk::draw(Graphics& graphics)
                       Graphics::BlitFlags::NONE, &color);
 }
 
-void createChunks(const Vector<float>& position)
+void createChunks(const Vector<float>& position, int chunks)
 {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < chunks; i++) {
                 EnemyChunk ch(position.x, position.y);
                 GameState::chunks.push_back(ch);
         }
