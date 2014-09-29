@@ -3,6 +3,7 @@
 #include "enemy.h"
 #include "boss.h"
 #include "shrapnel-enemy.h"
+#include "warning.h"
 
 #define MAKE_ENEMY(ms, x, y, dx, dy) \
         enemies_to_appear_.push_back( \
@@ -31,7 +32,12 @@ Stage1::Stage1() {
 
         enemies_to_appear_.push_back(
                 std::make_pair(
-                        std::chrono::milliseconds(10000),
+                        std::chrono::milliseconds(7000),
+                        std::make_shared<Warning>()));
+
+        enemies_to_appear_.push_back(
+                std::make_pair(
+                        std::chrono::milliseconds(12000),
                         std::make_shared<Boss>(40, -300)));
 
 

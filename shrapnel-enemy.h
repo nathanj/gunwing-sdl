@@ -15,7 +15,7 @@ private:
 	Vector<float> start_position_;
 	Timer time_to_next_bullet_;
 	Timer time_to_next_state_{std::chrono::milliseconds(1000)};
-	const std::chrono::milliseconds time_between_bullets_{500};
+	const std::chrono::milliseconds time_between_bullets_{1500};
 
 	enum class States { DOWN, SHOOTING, UP } state_;
 

@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <cassert>
 
 #include <SDL_image.h>
 
@@ -72,6 +73,8 @@ void Graphics::blit(const Texture& texture, int src_x, int src_y, int x,
 		    int y, int sprite_w, int sprite_h, BlitFlags flags,
                     const Color* color)
 {
+	assert(texture.w > 0);
+
         sprite_w = sprite_w == -1 ? texture.w : sprite_w;
         sprite_h = sprite_h == -1 ? texture.h : sprite_h;
 

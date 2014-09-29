@@ -3,6 +3,7 @@
 #include <array>
 #include <map>
 #include <memory>
+#include <string>
 
 #include <SDL.h>
 #include <GL/glew.h>

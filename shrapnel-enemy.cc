@@ -82,11 +82,8 @@ void ShrapnelEnemy::fireBullet()
 	if (GameState::ship->dead())
 		return;
 
-        LOG("Here");
-        TRACE(GameState::enemy_bullets.size());
 	GameState::enemy_bullets.push_back(
 		std::make_shared<ShrapnelBomb>(position_.x + 16,
 					       position_.y + 32, 0,
 					       1, 20));
-        LOG("Here");
 }

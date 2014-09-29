@@ -25,8 +25,6 @@ ShrapnelBomb::ShrapnelBomb(float x, float y, float dx, float dy, int shrapnel)
 
 void ShrapnelBomb::update(std::chrono::milliseconds delta)
 {
-        TRACE(delta.count());
-        TRACE(position_);
         if (health_ < 0) {
                 dead_ = true;
                 createMedals(position_);
@@ -57,7 +55,6 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
                                         position_.x + image_.w / 2,
                                         position_.y + image_.h / 2,
                                         dx, dy));
-                        TRACE(GameState::enemy_bullets.size());
                 }
         }
 }

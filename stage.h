@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "graphics.h"
 #include "background.h"
+#include "timer.h"
 
 class Stage {
 public:

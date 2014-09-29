@@ -11,7 +11,6 @@ void Shrapnel::loadContent(Graphics& graphics)
 
 Shrapnel::Shrapnel(float x, float y, float dx, float dy)
 {
-        LOG("Here");
 	position_ = {x, y};
 	direction_ = {dx, dy};
 	direction_.normalize();
@@ -21,7 +20,6 @@ Shrapnel::Shrapnel(float x, float y, float dx, float dy)
 
 void Shrapnel::update(std::chrono::milliseconds )
 {
-        LOG("here");
 	// todo - delta
 	position_.x += direction_.x * speed_;
 	position_.y += direction_.y * speed_;
@@ -34,6 +32,5 @@ void Shrapnel::update(std::chrono::milliseconds )
 
 void Shrapnel::draw(Graphics& graphics)
 {
-        LOG("here");
 	graphics.blit(image_, 0, 0, position_.x, position_.y);
 }

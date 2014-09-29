@@ -1,6 +1,8 @@
 #include "boss.h"
 
+#include <cassert>
 #include "game-state.h"
+#include "shrapnel-bomb.h"
 
 using ms = std::chrono::milliseconds;
 
@@ -51,17 +53,18 @@ void Boss::update(std::chrono::milliseconds delta)
 
         if (!time_to_next_bullet_.active() && state_ != States::DOWN) {
                 switch (form_) {
-                case THREE:
-                        time_to_next_bullet_.reset(ms(3 * 70 / 4));
-                        break;
                 case ONE:
                         time_to_next_bullet_.reset(ms(30 * 70));
                         break;
-                default:
+                case TWO:
                         time_to_next_bullet_.reset(ms(70));
                         break;
+                case THREE:
+                        time_to_next_bullet_.reset(ms(50));
+                        break;
+		default:
+			assert(0);
                 }
-                time_to_next_bullet_.reset(ms(70));
                 fireBullet();
         }
 
@@ -93,28 +96,35 @@ void Boss::fireBullet()
         if (GameState::ship->dead())
                 return;
 
+        if (form_ == Forms::ONE) {
+		Vector<float> pos = { position_.x + 60, position_.y + 200 };
+		if (!fire_left_)
+			pos = { position_.x + 310, position_.y + 200 };
 
-        angle_ += 0.03f; // todo - delta
+		GameState::enemy_bullets.push_back(
+			std::make_shared<ShrapnelBomb>(
+				pos.x, pos.y, 0, 1, shrapnel_rounds_));
 
-        for (int i = 0; i < 4; i++) {
-                GameState::enemy_bullets.push_back(
-                        std::make_shared<Bullet>(
-                                position_.x + image_.w / 4 - 20,
-                                position_.y + 120,
-                                cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                1.2));
-                GameState::enemy_bullets.push_back(
-                        std::make_shared<Bullet>(
-                                position_.x + 3*image_.w / 4 + 15,
-                                position_.y + 120,
-                                cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                1.2));
-        }
+		fire_left_ = !fire_left_;
+		shrapnel_rounds_ += 4;
+	} else {
+		angle_ += 0.03f; // todo - delta
 
-
-        //if (form_ == Forms::ONE) {
-
-        //}
+		for (int i = 0; i < 4; i++) {
+			GameState::enemy_bullets.push_back(
+				std::make_shared<Bullet>(
+					position_.x + image_.w / 4 - 20,
+					position_.y + 120,
+					cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+					sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+					1.2));
+			GameState::enemy_bullets.push_back(
+				std::make_shared<Bullet>(
+					position_.x + 3*image_.w / 4 + 15,
+					position_.y + 120,
+					cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+					sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+					1.2));
+		}
+	}
 }

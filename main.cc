@@ -21,6 +21,7 @@
 #include "shrapnel-enemy.h"
 #include "stage1.h"
 #include "shrapnel.h"
+#include "warning.h"
 
 static bool quit = false;
 
@@ -80,6 +81,7 @@ int main()
         ShrapnelEnemy::loadContent(graphics);
         ShrapnelBomb::loadContent(graphics);
         Shrapnel::loadContent(graphics);
+        Warning::loadContent(graphics);
 	std::shared_ptr<Stage> stage = std::make_shared<Stage1>();
 
 	FramesPerSecond fps;
