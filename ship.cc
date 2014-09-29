@@ -59,8 +59,8 @@ void Ship::handleInput(const Input& input)
 
 void Ship::fireBullet()
 {
-        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20, 0, -1, 15);
-        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20, 0, -1, 15);
+        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20, 0, -1, 15, 30);
+        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20, 0, -1, 15, 30);
         bullet_cooldown_.reset();
 }
 
