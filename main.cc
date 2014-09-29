@@ -22,6 +22,7 @@
 #include "stage1.h"
 #include "shrapnel.h"
 #include "warning.h"
+#include "healthbar.h"
 
 static bool quit = false;
 
@@ -82,6 +83,7 @@ int main()
         ShrapnelBomb::loadContent(graphics);
         Shrapnel::loadContent(graphics);
         Warning::loadContent(graphics);
+        HealthBar::loadContent(graphics);
 	std::shared_ptr<Stage> stage = std::make_shared<Stage1>();
 
 	FramesPerSecond fps;
