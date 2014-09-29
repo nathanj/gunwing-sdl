@@ -1,0 +1,112 @@
+#include "graphics.h"
+
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include <SDL_image.h>
+
+static void printSDLError(const std::string& msg)
+{
+	std::cout << msg << ": " << SDL_GetError() << std::endl;
+}
+
+Graphics::Graphics(SDL_Window* win) :
+	window(win)
+{
+	SDL_GL_CreateContext(win);
+
+        //const char *asdf = (const char *)glGetString(GL_EXTENSIONS);
+        //printf("asdf = %s\n", asdf);
+	glClearColor(0, 0, 0, 0);
+	glEnable(GL_TEXTURE_2D);
+        //glBlendColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_CONSTANT_COLOR, GL_ZERO);
+	glEnable(GL_BLEND);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
+Texture Graphics::loadImage(const std::string& file)
+{
+	// Load up the cached texture if possible.
+	auto p = texture_map.find(file);
+	if (p != texture_map.end())
+		return p->second;
+
+	// Otherwise load the image and store it in the map.
+	auto surface = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>(
+		IMG_Load(file.c_str()), &SDL_FreeSurface);
+	if (surface == NULL) {
+		printSDLError("IMG_Load " + file);
+		abort();
+	}
+
+	GLuint id;
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, surface->format->BytesPerPixel,
+                     surface->w, surface->h, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, surface->pixels);
+
+	Texture t{id, surface->w, surface->h};
+
+	texture_map[file] = t;
+
+	return t;
+}
+
+void Graphics::blit(const Texture& texture, int src_x, int src_y, int x,
+		    int y, int sprite_w, int sprite_h, BlitFlags flags,
+                    const Color* color)
+{
+        sprite_w = sprite_w == -1 ? texture.w : sprite_w;
+        sprite_h = sprite_h == -1 ? texture.h : sprite_h;
+
+	float sx = src_x * 1.0f / texture.w;
+	float tx = (src_x + sprite_w) * 1.0f / texture.w;
+	float sy = src_y * 1.0f / texture.h;
+	float ty = (src_y + sprite_h) * 1.0f / texture.h;
+
+	if ((flags & BlitFlags::HORIZONTAL_FLIP) == BlitFlags::HORIZONTAL_FLIP)
+		std::swap(sx, tx);
+	if ((flags & BlitFlags::VERTICAL_FLIP) == BlitFlags::VERTICAL_FLIP)
+		std::swap(sy, ty);
+
+	glBindTexture(GL_TEXTURE_2D, texture.id);
+
+        if (color)
+                glColor4f(color->r, color->g, color->b, color->a);
+        else
+                glColor4f(1, 1, 1, 1);
+
+	glBegin( GL_QUADS );
+	// Top-left vertex (corner)
+	glTexCoord2f(sx, sy);
+	glVertex3f( x, y, 0 );
+
+	// Top right
+	glTexCoord2f(tx, sy);
+	glVertex3f( x + sprite_w, y, 0 );
+
+	// Bottom-right vertex (corner)
+	glTexCoord2f(tx, ty);
+	glVertex3f( x + sprite_w, y + sprite_h, 0 );
+
+	// Bottom left
+	glTexCoord2f(sx, ty);
+	glVertex3f( x, y + sprite_h, 0 );
+	glEnd();
+}

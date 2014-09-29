@@ -1,0 +1,20 @@
+#pragma once
+
+#include <iostream>
+#include <chrono>
+#include <stdio.h>
+#include "vector.h"
+
+void createMedals(const Vector<float>& position);
+int p(int percent);
+int rand_between(int a, int b);
+double gaussrand();
+int rand_normal(int mean, int stddev);
+
+#if 1
+#define LOG(...) std::cout << __PRETTY_FUNCTION__ << ":" << __LINE__ << " " << __VA_ARGS__ << std::endl;
+#define TRACE(x) std::cout << __PRETTY_FUNCTION__ << ":" << __LINE__ << " " << #x << " = " << x << std::endl;
+#else
+#define LOG(...)
+#define TRACE(...)
+#endif
