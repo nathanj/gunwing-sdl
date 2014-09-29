@@ -63,7 +63,8 @@ void Enemy::update(std::chrono::milliseconds delta)
 	if (health_ <= 0) {
 		dead_ = true;
 		createMedals(position_);
-                createChunks(position_);
+		Vector<int> dimensions = {image_.w, image_.h};
+                createChunks(position_, dimensions);
 	}
 
 	if (!time_to_next_bullet_.active()) {

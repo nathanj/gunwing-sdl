@@ -14,5 +14,5 @@ public:
 
 private:
         int number_;
-        Timer lifetime_{std::chrono::milliseconds(1000)};
+        Timer lifetime_{std::chrono::milliseconds(2000)};
 };

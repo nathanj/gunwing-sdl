@@ -43,10 +43,12 @@ void Boss::update(std::chrono::milliseconds delta)
         invulnerable_.update(delta);
         healthbar_.update(delta);
 
-        for (auto& b : GameState::ship->bullets()) {
-                if (!b.dead() && collides(b)) {
-                        b.dead(true);
-                        health_ -= b.strength();
+        if (state_ != States::DOWN && !invulnerable_.active()) {
+                for (auto& b : GameState::ship->bullets()) {
+                        if (!b.dead() && collides(b)) {
+                                b.dead(true);
+                                health_ -= b.strength();
+                        }
                 }
         }
 
@@ -153,12 +155,14 @@ void Boss::nextForm()
         form_++;
         invulnerable_.reset();
         GameState::convertBulletsToMedals();
-        createChunks(position_, 100);
+        Vector<int> dimensions = {image_.w, image_.h};
+        createChunks(position_, dimensions, 100);
 }
 
 void Boss::die()
 {
         createMedals(position_, 2);
         GameState::convertBulletsToMedals();
-        createChunks(position_, 300);
+        Vector<int> dimensions = {image_.w, image_.h};
+        createChunks(position_, dimensions, 300);
 }

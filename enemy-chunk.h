@@ -20,4 +20,5 @@ protected:
         int r_, g_, b_;
 };
 
-void createChunks(const Vector<float>& position, int chunks = 4);
+void createChunks(const Vector<float>& position,
+		  const Vector<int>& dimensions, int chunks = 4);
