@@ -22,13 +22,9 @@ Graphics::Graphics(SDL_Window* win) :
 {
 	SDL_GL_CreateContext(win);
 
-        //const char *asdf = (const char *)glGetString(GL_EXTENSIONS);
-        //printf("asdf = %s\n", asdf);
 	glClearColor(0, 0, 0, 0);
 	glEnable(GL_TEXTURE_2D);
-        //glBlendColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glBlendFunc(GL_CONSTANT_COLOR, GL_ZERO);
 	glEnable(GL_BLEND);
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);

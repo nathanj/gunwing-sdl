@@ -57,7 +57,7 @@ void Enemy::update(std::chrono::milliseconds delta)
                 }
         }
 
-	if (position_.y < -200 || position_.y > 600)
+	if (position_.y < -200 || position_.y > Graphics::SCREEN_HEIGHT)
 		dead_ = true;
 
 	if (health_ <= 0) {

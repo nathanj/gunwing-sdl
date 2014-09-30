@@ -4,9 +4,11 @@
 
 // static
 Texture Bullet::image_;
+Texture Bullet::image2_;
 
-Bullet::Bullet(float x, float y, float dx, float dy, float speed, int strength) :
-        strength_(strength)
+Bullet::Bullet(float x, float y, float dx, float dy, float speed, int strength, int type) :
+        strength_(strength),
+        type_(type)
 {
         position_ = {x, y};
         direction_ = {dx, dy};
@@ -19,6 +21,7 @@ Bullet::Bullet(float x, float y, float dx, float dy, float speed, int strength) 
 void Bullet::loadContent(Graphics& graphics)
 {
         image_ = graphics.loadImage("ebullet.png");
+        image2_ = graphics.loadImage("bullet.png");
 }
 
 void Bullet::update(std::chrono::milliseconds )
@@ -35,5 +38,8 @@ void Bullet::update(std::chrono::milliseconds )
 
 void Bullet::draw(Graphics& graphics)
 {
-        graphics.blit(image_, 0, 0, position_.x, position_.y);
+        if (type_ == 1)
+                graphics.blit(image_, 0, 0, position_.x, position_.y);
+        else
+                graphics.blit(image2_, 0, 0, position_.x, position_.y);
 }

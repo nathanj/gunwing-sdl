@@ -20,7 +20,7 @@ ShrapnelBomb::ShrapnelBomb(float x, float y, float dx, float dy, int shrapnel)
         speed_ = 5;
         shrapnel_count_ = shrapnel;
         health_ = 50;
-        geometry_.push_back( {9, 9, 14, 14} );
+        geometry_.push_back( {5, 5, 25, 25} );
 }
 
 void ShrapnelBomb::update(std::chrono::milliseconds delta)
@@ -43,8 +43,8 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
                 position_.y += direction_.y * speed_;
         }
 
-        if (position_.y < 0 || position_.y + image_.h > 600 ||
-            position_.x < 0 || position_.x + image_.w > 480 ||
+        if (position_.y < 0 || position_.y + image_.h > Graphics::SCREEN_HEIGHT ||
+            position_.x < 0 || position_.x + image_.w > Graphics::SCREEN_WIDTH ||
             dead()) {
                 dead_ = true;
                 for (int i = 0; i < shrapnel_count_; i++) {

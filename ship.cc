@@ -59,8 +59,8 @@ void Ship::handleInput(const Input& input)
 
 void Ship::fireBullet()
 {
-        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20, 0, -1, 15, 30);
-        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20, 0, -1, 15, 30);
+        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20, 0, -1, 15, 50, 2);
+        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20, 0, -1, 15, 50, 2);
         bullet_cooldown_.reset();
 }
 
@@ -80,9 +80,18 @@ void Ship::update(std::chrono::milliseconds delta)
 		return;
 	}
 
+        for (auto& b : GameState::enemy_bullets)
+                handleCollisions(*b);
+
+        for (auto& b : GameState::enemies)
+                handleCollisions(*b);
+
         // todo - use delta
         position_.x += direction_.x * speed_;
         position_.y += direction_.y * speed_;
+
+        position_.x = clamp(position_.x, 0.0f, 1.0f * Graphics::SCREEN_WIDTH - image_.w);
+        position_.y = clamp(position_.y, 0.0f, 1.0f * Graphics::SCREEN_HEIGHT - image_.h);
 
 	collectMedals();
 
@@ -90,6 +99,14 @@ void Ship::update(std::chrono::milliseconds delta)
 	remove_dead(bullets_);
 
         medal_plus_.update(delta);
+}
+
+void Ship::handleCollisions(const Sprite& sprite)
+{
+        if (!sprite.dead() && collides(sprite)) {
+                if (!invinicibility_time_.active())
+                        die();
+        }
 }
 
 void Ship::collectMedals()
@@ -106,13 +123,19 @@ void Ship::collectMedals()
 
 void Ship::draw(Graphics& graphics)
 {
-        if (invinicibility_time_.active())
-                graphics.blit(image_shield_, 0, 0, position_.x, position_.y);
+        if (dead_)
+                return;
 
         for (auto& b : bullets_) b.draw(graphics);
         medal_plus_.draw(graphics);
 
         graphics.blit(image_, 0, 0, position_.x, position_.y);
+        if (invinicibility_time_.active()) {
+                float fade = invinicibility_time_.percent_left();
+                Color color{1, 1, 1, fade};
+                graphics.blit(image_shield_, 0, 0, position_.x - 8, position_.y - 8,
+                              -1, -1, Graphics::BlitFlags::NONE, &color);
+        }
 
         FontScore::draw(graphics, score_, 0, 0);
 }
@@ -123,6 +146,8 @@ void Ship::die()
 	lives_--;
 	bullets_.clear();
 	respawn_time_.reset(std::chrono::milliseconds(2500));
+        Vector<int> dimensions = { image_.w, image_.h };
+        createChunks(position_, dimensions, 50);
 }
 
 void Ship::respawn()

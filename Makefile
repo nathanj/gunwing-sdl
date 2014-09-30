@@ -5,7 +5,7 @@ LDLIBS   := $(shell pkg-config --libs sdl2 SDL2_image glew) -lGL
 SRCS     := $(wildcard *.cc)
 OBJS     := $(SRCS:.cc=.o)
 
-all: main
+all: run
 
 .PHONY: run
 run: main

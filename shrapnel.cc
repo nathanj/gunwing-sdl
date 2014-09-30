@@ -14,7 +14,7 @@ Shrapnel::Shrapnel(float x, float y, float dx, float dy)
 	position_ = {x, y};
 	direction_ = {dx, dy};
 	direction_.normalize();
-	speed_ = 4;
+	speed_ = 3;
 	geometry_.push_back( {2, 2, 4, 4} );
 }
 
@@ -24,9 +24,9 @@ void Shrapnel::update(std::chrono::milliseconds )
 	position_.x += direction_.x * speed_;
 	position_.y += direction_.y * speed_;
 
-	if (position_.x < -32 || position_.x > 480)
+	if (position_.x < -32 || position_.x > Graphics::SCREEN_WIDTH)
 		dead_ = true;
-	if (position_.y < -32 || position_.y > 600)
+	if (position_.y < -32 || position_.y > Graphics::SCREEN_HEIGHT)
 		dead_ = true;
 }
 

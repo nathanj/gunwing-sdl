@@ -5,6 +5,16 @@
 #include <stdio.h>
 #include "vector.h"
 
+template <typename T>
+T clamp(T value, T min, T max)
+{
+  if (value < min)
+    return min;
+  if (value > max)
+    return max;
+  return value;
+}
+
 void createMedals(const Vector<float>& position, float factor = 1);
 int p(int percent);
 int rand_between(int a, int b);

@@ -42,4 +42,5 @@ private:
 	void die();
 	void respawn();
 	void collectMedals();
+	void handleCollisions(const Sprite& sprite);
 };
