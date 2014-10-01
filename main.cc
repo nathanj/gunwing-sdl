@@ -23,8 +23,10 @@
 #include "shrapnel.h"
 #include "warning.h"
 #include "healthbar.h"
+#include "utils.h"
 
 static bool quit = false;
+SDL_Joystick *js;
 
 static void printSDLError(const std::string& msg)
 {
@@ -45,6 +47,13 @@ static void handleEvents(Input& input)
 			break;
 		}
 	}
+        TRACE(js);
+        TRACE(SDL_JoystickGetAxis(js, 0));
+        TRACE(SDL_JoystickGetAxis(js, 1));
+        if(SDL_JoystickGetButton(js, 0) == 0)
+                LOG("no button");
+        else
+                LOG("button");
 }
 
 int main()
@@ -69,6 +78,20 @@ int main()
 		return 1;
 	}
 
+        int njoysticks = SDL_NumJoysticks();
+        TRACE(njoysticks);
+        printf("js=%p\n", js);
+        if (js) {
+                printf("Opened Joystick 0\n");
+                printf("Name: %s\n", SDL_JoystickNameForIndex(0));
+                printf("Number of Axes: %d\n", SDL_JoystickNumAxes(js));
+                printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(js));
+                printf("Number of Balls: %d\n", SDL_JoystickNumBalls(js));
+        } else {
+                printf("Couldn't open Joystick 0\n");
+        }
+
+
 	Graphics graphics(win.get());
         Ship::loadContent(graphics);
         Bullet::loadContent(graphics);
@@ -90,6 +113,8 @@ int main()
 	Input input;
         Ship ship;
 	GameState::ship = &ship;
+
+        input.openJoystick(0);
 
 	auto last_tick = SDL_GetTicks();
 	while (!quit) {

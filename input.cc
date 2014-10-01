@@ -52,6 +52,16 @@ Vector<int> Input::getMouseClickPosition(int button) const
 	return mouse.at(button);
 }
 
+Vector<float> Input::getAxis() const
+{
+        return {x / 32768.0f, y / 32768.0f};
+}
+
+bool Input::getButton() const
+{
+        return button;
+}
+
 void Input::handleEvent(const SDL_Event& e)
 {
 	switch (e.type) {
@@ -66,4 +76,16 @@ void Input::handleEvent(const SDL_Event& e)
 		mouseClick(e.button.button, e.button.x, e.button.y);
 		break;
 	}
+}
+
+void Input::openJoystick(int index)
+{
+        joysticks_.push_back(SDL_JoystickOpen(index));
+}
+
+void Input::handleJoystick(int index)
+{
+        x = SDL_JoystickGetAxis(joysticks_[index], 0);
+        y = SDL_JoystickGetAxis(joysticks_[index], 1);
+        button = SDL_JoystickGetButton(joysticks_[index], 0);
 }
