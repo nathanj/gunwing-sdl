@@ -39,21 +39,28 @@ void Ship::loadContent(Graphics& graphics)
 
 void Ship::handleInput(const Input& input)
 {
-        direction_ = {0, 0};
+	Vector<float> axis = input.getAxis();
+	if (axis.x != 0 || axis.y != 0) {
+		direction_ = axis;
+		direction_.normalize();
+	} else {
+		direction_ = {0, 0};
 
-        if (input.isKeyHeld(SDLK_LEFT))
-                direction_.x = -1;
-        else if (input.isKeyHeld(SDLK_RIGHT))
-                direction_.x = 1;
+		if (input.isKeyHeld(SDLK_LEFT))
+			direction_.x = -1;
+		else if (input.isKeyHeld(SDLK_RIGHT))
+			direction_.x = 1;
 
-        if (input.isKeyHeld(SDLK_DOWN))
-                direction_.y = 1;
-        else if (input.isKeyHeld(SDLK_UP))
-                direction_.y = -1;
+		if (input.isKeyHeld(SDLK_DOWN))
+			direction_.y = 1;
+		else if (input.isKeyHeld(SDLK_UP))
+			direction_.y = -1;
 
-	direction_.normalize();
+		direction_.normalize();
+	}
 
-        if (input.isKeyHeld(SDLK_SPACE) && !bullet_cooldown_.active())
+        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton())
+	    && !bullet_cooldown_.active())
                 fireBullet();
 }
 
@@ -80,10 +87,10 @@ void Ship::update(std::chrono::milliseconds delta)
 		return;
 	}
 
-        for (auto& b : GameState::enemy_bullets)
+        for (const auto& b : GameState::enemy_bullets)
                 handleCollisions(*b);
 
-        for (auto& b : GameState::enemies)
+        for (const auto& b : GameState::enemies)
                 handleCollisions(*b);
 
         // todo - use delta

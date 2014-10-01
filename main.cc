@@ -47,13 +47,7 @@ static void handleEvents(Input& input)
 			break;
 		}
 	}
-        TRACE(js);
-        TRACE(SDL_JoystickGetAxis(js, 0));
-        TRACE(SDL_JoystickGetAxis(js, 1));
-        if(SDL_JoystickGetButton(js, 0) == 0)
-                LOG("no button");
-        else
-                LOG("button");
+	input.handleJoystick(0);
 }
 
 int main()
@@ -114,7 +108,8 @@ int main()
         Ship ship;
 	GameState::ship = &ship;
 
-        input.openJoystick(0);
+	if (SDL_NumJoysticks() > 0)
+		input.openJoystick(0);
 
 	auto last_tick = SDL_GetTicks();
 	while (!quit) {

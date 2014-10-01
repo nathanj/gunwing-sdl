@@ -78,13 +78,16 @@ void Input::handleEvent(const SDL_Event& e)
 	}
 }
 
-void Input::openJoystick(int index)
+void Input::openJoystick(unsigned int index)
 {
         joysticks_.push_back(SDL_JoystickOpen(index));
 }
 
-void Input::handleJoystick(int index)
+void Input::handleJoystick(unsigned int index)
 {
+        if (joysticks_.size() <= index)
+                return;
+
         x = SDL_JoystickGetAxis(joysticks_[index], 0);
         y = SDL_JoystickGetAxis(joysticks_[index], 1);
         button = SDL_JoystickGetButton(joysticks_[index], 0);

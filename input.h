@@ -18,15 +18,15 @@ public:
 	bool wasMouseClicked(int button) const;
 	Vector<int> getMouseClickPosition(int button) const;
         Vector<float> getAxis() const;
-        bool Input::getButton() const;
+        bool getButton() const;
+        void openJoystick(unsigned int index);
+        void handleJoystick(unsigned int index);
 private:
 	std::map<SDL_Keycode, bool> pressed;
 	std::map<SDL_Keycode, bool> released;
 	std::map<SDL_Keycode, bool> held;
 	std::map<int, Vector<int>> mouse;
 	std::vector<SDL_Joystick*> joysticks_;
-        void openJoystick(int index);
-        void handleJoystick(int index);
-        float x, y;
-        bool button;
+        float x{0}, y{0};
+        bool button{false};
 };
