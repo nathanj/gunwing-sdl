@@ -22,6 +22,7 @@ public:
 
 	int score() { return score_; }
 	void score(int s) { score_ = std::min(s, 999999999); }
+	int medal_count() { return medal_count_; }
 
         std::vector<Bullet>& bullets() { return bullets_; }
 
