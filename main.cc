@@ -10,23 +10,28 @@
 #include "background.h"
 #include "boss.h"
 #include "enemy.h"
+#include "font-medal.h"
 #include "font-score.h"
 #include "font-small.h"
 #include "fps.h"
 #include "game-state.h"
 #include "graphics.h"
+#include "healthbar.h"
+#include "hud.h"
 #include "input.h"
 #include "ship.h"
 #include "shrapnel-bomb.h"
 #include "shrapnel-enemy.h"
-#include "stage1.h"
 #include "shrapnel.h"
-#include "warning.h"
-#include "healthbar.h"
+#include "stage1.h"
 #include "utils.h"
+#include "warning.h"
+#include "stage-cleared.h"
+#include "electric-ball.h"
+#include "electric-beam.h"
+#include "reflective-beam.h"
 
 static bool quit = false;
-SDL_Joystick *js;
 
 static void printSDLError(const std::string& msg)
 {
@@ -72,41 +77,35 @@ int main()
 		return 1;
 	}
 
-        int njoysticks = SDL_NumJoysticks();
-        TRACE(njoysticks);
-        printf("js=%p\n", js);
-        if (js) {
-                printf("Opened Joystick 0\n");
-                printf("Name: %s\n", SDL_JoystickNameForIndex(0));
-                printf("Number of Axes: %d\n", SDL_JoystickNumAxes(js));
-                printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(js));
-                printf("Number of Balls: %d\n", SDL_JoystickNumBalls(js));
-        } else {
-                printf("Couldn't open Joystick 0\n");
-        }
-
-
 	Graphics graphics(win.get());
-        Ship::loadContent(graphics);
+        Background::loadContent(graphics);
+        Boss::loadContent(graphics);
         Bullet::loadContent(graphics);
         Enemy::loadContent(graphics);
-        Background::loadContent(graphics);
         EnemyChunk::loadContent(graphics);
-        Medal::loadContent(graphics);
-        FontSmall::loadContent(graphics);
+        FontMedal::loadContent(graphics);
         FontScore::loadContent(graphics);
-        Boss::loadContent(graphics);
-        ShrapnelEnemy::loadContent(graphics);
-        ShrapnelBomb::loadContent(graphics);
-        Shrapnel::loadContent(graphics);
-        Warning::loadContent(graphics);
+        FontSmall::loadContent(graphics);
         HealthBar::loadContent(graphics);
+        Hud::loadContent(graphics);
+        Medal::loadContent(graphics);
+        Ship::loadContent(graphics);
+        Shrapnel::loadContent(graphics);
+        ShrapnelBomb::loadContent(graphics);
+        ShrapnelEnemy::loadContent(graphics);
+        Warning::loadContent(graphics);
+        StageCleared::loadContent(graphics);
+        ElectricBall::loadContent(graphics);
+        ElectricBeam::loadContent(graphics);
+        ReflectiveBeam::loadContent(graphics);
 	std::shared_ptr<Stage> stage = std::make_shared<Stage1>();
 
 	FramesPerSecond fps;
 	Input input;
         Ship ship;
+	Hud hud;
 	GameState::ship = &ship;
+	GameState::hud = &hud;
 
 	if (SDL_NumJoysticks() > 0)
 		input.openJoystick(0);
@@ -130,6 +129,9 @@ int main()
                 ship.update(delta);
 		stage->update(delta);
                 GameState::update(delta);
+
+		if (stage->next_stage())
+			stage = std::make_shared<Stage1>();
 
 		// Render the scene
 		graphics.clear();

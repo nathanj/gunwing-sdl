@@ -81,6 +81,14 @@ void Input::handleEvent(const SDL_Event& e)
 void Input::openJoystick(unsigned int index)
 {
         joysticks_.push_back(SDL_JoystickOpen(index));
+        auto js = joysticks_[joysticks_.size()-1];
+        if (js) {
+                printf("Opened Joystick 0\n");
+                printf("Name: %s\n", SDL_JoystickNameForIndex(0));
+                printf("Number of Axes: %d\n", SDL_JoystickNumAxes(js));
+                printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(js));
+                printf("Number of Balls: %d\n", SDL_JoystickNumBalls(js));
+        }
 }
 
 void Input::handleJoystick(unsigned int index)

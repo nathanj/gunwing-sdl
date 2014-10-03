@@ -7,7 +7,7 @@ class FontMedal {
 public:
         static Texture image_;
         static void loadContent(Graphics& graphics);
-        static void draw(Graphics& graphics, int count, Vector<float> position);
+        static void draw(Graphics& graphics, int count, float x, float y);
 
 private:
         static const int width_ = 20;

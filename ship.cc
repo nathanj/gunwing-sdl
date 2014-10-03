@@ -59,16 +59,33 @@ void Ship::handleInput(const Input& input)
 		direction_.normalize();
 	}
 
-        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton())
-	    && !bullet_cooldown_.active())
+        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton()))
                 fireBullet();
+
+        if (input.isKeyHeld(SDLK_b))
+                fireBomb();
 }
 
 void Ship::fireBullet()
 {
-        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20, 0, -1, 15, 50, 2);
-        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20, 0, -1, 15, 50, 2);
+	if (bullet_cooldown_.active())
+		return;
+
+	bullets_.emplace_back(position_.x + image_.w / 2 - 16,
+			      position_.y + 20, 0, -1, 15, 50, 2);
+	bullets_.emplace_back(position_.x + image_.w / 2 + 8,
+			      position_.y + 20, 0, -1, 15, 50, 2);
         bullet_cooldown_.reset();
+}
+
+void Ship::fireBomb()
+{
+	if (!bomb_ && bombs_ > 0) {
+		bomb_ = std::make_shared<Bomb>(position_.x, position_.y);
+		invinicibility_time_.reset();
+		bombs_--;
+		bullets_.clear();
+	}
 }
 
 void Ship::update(std::chrono::milliseconds delta)
@@ -143,8 +160,6 @@ void Ship::draw(Graphics& graphics)
                 graphics.blit(image_shield_, 0, 0, position_.x - 8, position_.y - 8,
                               -1, -1, Graphics::BlitFlags::NONE, &color);
         }
-
-        FontScore::draw(graphics, score_, 0, 0);
 }
 
 void Ship::die()
@@ -153,7 +168,7 @@ void Ship::die()
 	lives_--;
 	bullets_.clear();
 	respawn_time_.reset(std::chrono::milliseconds(2500));
-        Vector<int> dimensions = { image_.w, image_.h };
+        auto dimensions = Vector<int>{ image_.w, image_.h };
         createChunks(position_, dimensions, 50);
 }
 

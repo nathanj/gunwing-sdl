@@ -4,6 +4,7 @@
 
 // static
 Ship* GameState::ship;
+Hud* GameState::hud;
 std::vector<std::shared_ptr<Sprite>> GameState::enemy_bullets;
 std::vector<std::shared_ptr<Sprite>> GameState::enemies;
 std::vector<Medal> GameState::medals;
@@ -37,6 +38,7 @@ void GameState::draw(Graphics& graphics)
         for (auto& e : enemy_bullets)
                 e->draw(graphics);
         ship->draw(graphics);
+        hud->draw(graphics);
 }
 
 void GameState::convertBulletsToMedals()
