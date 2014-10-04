@@ -1,6 +1,7 @@
 #include "bullet.h"
 
 #include <string>
+#include "game-state.h"
 
 // static
 Texture Bullet::image_;

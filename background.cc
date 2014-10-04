@@ -40,7 +40,7 @@ void Background::update(std::chrono::milliseconds)
                 position_[1].y += clouds_.h;
 
         if (state_ == State::FADE_IN) {
-                alpha_ *= 1.04f;
+                alpha_ *= 1.03f;
                 if (alpha_ > 1.0f) {
                         alpha_ = 1.0f;
                         state_ = State::NORMAL;
@@ -48,21 +48,23 @@ void Background::update(std::chrono::milliseconds)
         } else if (state_ == State::FADE_OUT) {
                 alpha_ *= 0.96f;
                 if (alpha_ < 0.02f) {
-                        alpha_ = 0.01f;
-                        state_ = State::NORMAL;
+                        alpha_ = 0.00f;
+                        state_ = State::DONE;
                 }
         }
 }
 
 void Background::draw(Graphics &graphics)
 {
+        auto color = Color{1, 1, 1, alpha_};
         graphics.blit(background_, position_[0].x, position_[0].y, 0, 0,
-                      background_.w, background_.h, Graphics::BlitFlags::NONE);
+                      background_.w, background_.h, Graphics::BlitFlags::NONE,
+                      &color);
         graphics.blit(background_, position_[0].x,
                       position_[0].y - background_.h, 0, 0, background_.w,
-                      background_.h, Graphics::BlitFlags::NONE);
+                      background_.h, Graphics::BlitFlags::NONE, &color);
 
-        Color color{1, 1, 1, 0.1f};
+        color.a *= 0.1f;
         graphics.blit(clouds_, position_[1].x, position_[1].y, 0, 0, clouds_.w,
                       clouds_.h, Graphics::BlitFlags::NONE, &color);
         graphics.blit(clouds_, position_[1].x, position_[1].y - clouds_.h, 0, 0,

@@ -15,6 +15,10 @@ class Background
         void update(std::chrono::milliseconds delta);
         void draw(Graphics &graphics);
         void fadeOut();
+        bool done()
+        {
+                return state_ == State::DONE;
+        }
 
   private:
         Texture &background_;
@@ -22,6 +26,6 @@ class Background
         float alpha_;
         enum class State
         {
-                FADE_IN, NORMAL, FADE_OUT
+                FADE_IN, NORMAL, FADE_OUT, DONE
         } state_;
 };

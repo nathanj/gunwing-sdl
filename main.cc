@@ -33,6 +33,7 @@
 #include "stage-cleared.h"
 #include "utils.h"
 #include "warning.h"
+#include "title-screen.h"
 
 static bool quit = false;
 
@@ -87,6 +88,7 @@ int main()
         Enemy::loadContent(graphics);
         EnemyChunk::loadContent(graphics);
         FontMedal::loadContent(graphics);
+        TitleScreen::loadContent(graphics);
         FontScore::loadContent(graphics);
         FontSmall::loadContent(graphics);
         HealthBar::loadContent(graphics);
@@ -102,17 +104,19 @@ int main()
         ElectricBeam::loadContent(graphics);
         ReflectiveBeam::loadContent(graphics);
         Boss2::loadContent(graphics);
-        std::shared_ptr<Stage> stage = std::make_shared<Stage2>();
 
         FramesPerSecond fps;
         Input input;
         Ship ship;
         Hud hud;
+        GameState::initialize();
         GameState::ship = &ship;
         GameState::hud = &hud;
 
         if (SDL_NumJoysticks() > 0)
                 input.openJoystick(0);
+
+        // GameState::nextStage();
 
         auto last_tick = SDL_GetTicks();
         while (!quit) {
@@ -122,25 +126,18 @@ int main()
 
                 if (input.wasKeyPressed(SDLK_ESCAPE))
                         quit = true;
-                ship.handleInput(input);
 
                 auto tick = SDL_GetTicks();
                 std::chrono::milliseconds delta(tick - last_tick);
                 last_tick = tick;
 
                 // Update
+                GameState::handleInput(input);
                 fps.update(delta);
-                stage->update(delta);
                 GameState::update(delta);
 
-                if (stage->next_stage())
-                        stage = std::make_shared<Stage1>();
-
                 // Render the scene
-                graphics.clear();
-                stage->draw(graphics);
                 GameState::draw(graphics);
-                graphics.flip();
         }
 
         std::cout << "FPS: " << fps.fps() << std::endl;

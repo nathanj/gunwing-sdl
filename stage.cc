@@ -25,7 +25,9 @@ void Stage::update(std::chrono::milliseconds delta)
                             std::make_shared<StageCleared>());
                 } else {
                         LOG("next stage!");
-                        next_stage_ = true;
+                        if (background_->done())
+                                next_stage_ = true;
+                        background_->fadeOut();
                 }
         }
 }

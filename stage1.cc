@@ -24,6 +24,10 @@ Stage1::Stage1()
         MAKE_ENEMY(3500, 510, 100, -1, 1);
         MAKE_ENEMY(3700, 500, 110, -1, 1);
 
+        enemies_to_appear_.push_back(std::make_pair(
+            std::chrono::milliseconds(8000), std::make_shared<Boss>(40, -300)));
+
+        return;
         MAKE_ENEMY(5200, -30, 60, 1, 1);
         MAKE_ENEMY(5200, 480, 60, -1, 1);
         MAKE_ENEMY(5500, -20, 100, 1, 1);

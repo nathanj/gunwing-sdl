@@ -30,6 +30,7 @@ Stage2::Stage2()
         MAKE_ENEMY(5700, -50, 130, 1.f, 1.f);
         MAKE_ENEMY(5700, 530, 130, -1.f, 1.f);
 
+        return;
         MAKE_ENEMY(6200, -30, 110, 1.f, 1.f);
         MAKE_ENEMY(6200, 480, 110, -1.f, 1.f);
         MAKE_ENEMY(6500, -20, 150, 1.f, 1.f);
@@ -242,7 +243,10 @@ Stage2::Stage2()
         MAKE_ENEMY(61500, 350, -30, 0.f, 1.f);
         MAKE_ENEMY(61700, 400, -20, 0.f, 1.f);
 
+        enemies_to_appear_.push_back(std::make_pair(
+            std::chrono::milliseconds(70000), std::make_shared<Warning>()));
+
         enemies_to_appear_.push_back(
-            std::make_pair(std::chrono::milliseconds(70000),
+            std::make_pair(std::chrono::milliseconds(75000),
                            std::make_shared<Boss2>(40, -300)));
 }
