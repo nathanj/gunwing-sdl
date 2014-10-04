@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sprite.h"
+#include "utils.h"
 
 class Bullet : public Sprite {
 public:
@@ -14,7 +15,7 @@ public:
         void update(std::chrono::milliseconds );
         void draw(Graphics& graphics);
 
-        int strength() { return strength_; }
+        int strength() const { return strength_; }
 
 protected:
         int strength_;

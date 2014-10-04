@@ -40,7 +40,7 @@ void EnemyChunk::update(std::chrono::milliseconds delta)
 
 void EnemyChunk::draw(Graphics& graphics)
 {
-        float alpha = 0.8f * lifetime_.percent_left();
+        float alpha = 0.8f * lifetime_.percent_remaining();
         Color color{1, 1, 1, alpha};
         graphics.blit(images_[type_], 0, 0, position_.x, position_.y,
                       images_[type_].w, images_[type_].h,

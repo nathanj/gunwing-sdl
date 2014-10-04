@@ -50,7 +50,7 @@ void Enemy::update(std::chrono::milliseconds delta)
 		}
 	}
 
-        for (auto& b : GameState::ship->bullets()) {
+        for (auto&& b : GameState::ship->bullets()) {
                 if (!b.dead() && collides(b)) {
                         b.dead(true);
                         health_ -= b.strength();

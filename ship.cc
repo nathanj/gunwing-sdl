@@ -8,6 +8,7 @@
 #include "medal-plus.h"
 #include "utils.h"
 #include "font-score.h"
+#include "utils.h"
 
 // static
 Texture Ship::image_shield_;
@@ -96,17 +97,20 @@ void Ship::update(std::chrono::milliseconds delta)
 	if (dead_) {
 		respawn_time_.update(delta);
 		if (!respawn_time_.active()) {
-			if (lives_ >= 0)
-				respawn();
-			else
-				game_over_ = true;
+                        // todo
+                        respawn();
+			//if (lives_ >= 0)
+			//	respawn();
+			//else
+			//	game_over_ = true;
 		}
 		return;
 	}
 
+        for (const auto& b : GameState::background_enemy_bullets)
+                handleCollisions(*b);
         for (const auto& b : GameState::enemy_bullets)
                 handleCollisions(*b);
-
         for (const auto& b : GameState::enemies)
                 handleCollisions(*b);
 
@@ -155,7 +159,7 @@ void Ship::draw(Graphics& graphics)
 
         graphics.blit(image_, 0, 0, position_.x, position_.y);
         if (invinicibility_time_.active()) {
-                float fade = invinicibility_time_.percent_left();
+                float fade = invinicibility_time_.percent_remaining();
                 Color color{1, 1, 1, fade};
                 graphics.blit(image_shield_, 0, 0, position_.x - 8, position_.y - 8,
                               -1, -1, Graphics::BlitFlags::NONE, &color);

@@ -30,7 +30,7 @@ void ReflectiveBeam::update(std::chrono::milliseconds delta)
                 dead_ = true;
 
         // Reverse direction when we hit the walls.
-        if (position_.x < left_wall_ || position_.y > right_wall_)
+        if (position_.x < left_wall_ || position_.x > right_wall_)
                 direction_.x = -direction_.x;
 }
 

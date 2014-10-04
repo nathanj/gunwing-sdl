@@ -19,7 +19,7 @@ void MedalPlus::draw(Graphics& graphics)
                 GameState::ship->position().y -  3 + direction_.y * speed_ * lifetime_.percent_elapsed(),
         };
 
-        float alpha = 1.0f * lifetime_.percent_left();
+        float alpha = 1.0f * lifetime_.percent_remaining();
         FontSmall::draw(graphics, number_, position_.x, position_.y, alpha);
         FontSmall::draw(graphics, number_, position_.x + 1, position_.y + 1, alpha/4);
         FontSmall::draw(graphics, number_, position_.x + 2, position_.y + 2, alpha/8);

@@ -9,6 +9,7 @@
 
 #include "background.h"
 #include "boss.h"
+#include "boss2.h"
 #include "enemy.h"
 #include "font-medal.h"
 #include "font-score.h"
@@ -24,6 +25,7 @@
 #include "shrapnel-enemy.h"
 #include "shrapnel.h"
 #include "stage1.h"
+#include "stage2.h"
 #include "utils.h"
 #include "warning.h"
 #include "stage-cleared.h"
@@ -98,7 +100,8 @@ int main()
         ElectricBall::loadContent(graphics);
         ElectricBeam::loadContent(graphics);
         ReflectiveBeam::loadContent(graphics);
-	std::shared_ptr<Stage> stage = std::make_shared<Stage1>();
+        Boss2::loadContent(graphics);
+	std::shared_ptr<Stage> stage = std::make_shared<Stage2>();
 
 	FramesPerSecond fps;
 	Input input;
@@ -126,7 +129,6 @@ int main()
 
 		// Update
 		fps.update(delta);
-                ship.update(delta);
 		stage->update(delta);
                 GameState::update(delta);
 

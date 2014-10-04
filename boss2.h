@@ -22,11 +22,13 @@ private:
         const int max_health_{120000};
 	std::vector<int> healthbar_markers_{ {90000, 40000, 0} };
 	HealthBar healthbar_;
+        float angle_{0};
 
         enum States { DOWN, NORMAL } state_{DOWN};
         enum Forms { ONE, TWO, THREE } form_{ONE};
 
         void fireBullet();
+        void fireElectricBeam();
         void fireLargeBullet();
         void nextForm();
         void die();

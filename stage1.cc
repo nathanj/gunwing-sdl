@@ -4,6 +4,7 @@
 #include "boss.h"
 #include "shrapnel-enemy.h"
 #include "warning.h"
+#include "boss2.h"
 
 #define MAKE_ENEMY(ms, x, y, dx, dy) \
         enemies_to_appear_.push_back( \

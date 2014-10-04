@@ -30,16 +30,16 @@ void Background::update(std::chrono::milliseconds )
         position_[0].x = GameState::ship->position().x / 5;
         position_[0].x = std::max(-120.0f, position_[0].x);
 
-        position_[0].y += 3; // todo delta
-        if (position_[0].y > background_.h)
-                position_[0].y -= background_.h;
+        position_[0].y -= 3; // todo delta
+        if (position_[0].y < 0)
+                position_[0].y += background_.h;
 
         position_[1].x = GameState::ship->position().x / 4;
         position_[1].x = std::max(-120.0f, position_[1].x);
 
-        position_[1].y += 1.0f;
-        if (position_[1].y > clouds_.h)
-                position_[1].y -= clouds_.h;
+        position_[1].y -= 1.0f;
+        if (position_[1].y < 0)
+                position_[1].y += clouds_.h;
 
         if (state_ == State::FADE_IN) {
                 alpha_ *= 1.04f;

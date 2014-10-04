@@ -32,7 +32,7 @@ void Bomb::update(std::chrono::milliseconds delta)
 
 void Bomb::draw(Graphics& graphics)
 {
-        auto alpha = lifetime_.percent_left();
+        auto alpha = lifetime_.percent_remaining();
         auto color = Color{1, 1, 1, alpha};
         graphics.blit(image_, 0, 0, position_.x, position_.y, -1, -1,
                       Graphics::BlitFlags::NONE, &color);

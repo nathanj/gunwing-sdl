@@ -24,9 +24,10 @@ public:
 		return a;
 	}
 
-	float percent_left() const { return ((float) remaining_.count() / duration_.count()); }
-	float percent_elapsed() const { return 1.0f - percent_left(); }
+	float percent_remaining() const { return ((float) remaining_.count() / duration_.count()); }
+	float percent_elapsed() const { return 1.0f - percent_remaining(); }
 	std::chrono::milliseconds elapsed() const { return duration_ - remaining_; }
+	std::chrono::milliseconds remaining() const { return remaining_; }
 
 private:
 	std::chrono::milliseconds duration_;

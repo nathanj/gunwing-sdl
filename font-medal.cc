@@ -15,8 +15,9 @@ void FontMedal::draw(Graphics& graphics, int count, float x, float y)
                 x += width_;
                 int num = c == 'x' ? 10 : c - '0';
                 Color color{1, 1, 1, .5};
-                graphics.blit(image_, num * width_, 0, x + 1, y + 1, -1, -1,
+                graphics.blit(image_, num * width_, 0, x + 1, y + 1,
+                              width_, height_,
                               Graphics::BlitFlags::NONE, &color);
-                graphics.blit(image_, num * width_, 0, x, y);
+                graphics.blit(image_, num * width_, 0, x, y, width_, height_);
         }
 }

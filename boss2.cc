@@ -66,23 +66,17 @@ void Boss2::update(std::chrono::milliseconds delta)
                 fireBullet();
         }
 
+        if (state_ != States::DOWN &&
+            (form_ == Forms::ONE || form_ == Forms::THREE))
+                fireElectricBeam();
+
         if (!time_to_next_large_bullet_.active() && state_ != States::DOWN &&
             (form_ == Forms::TWO || form_ == Forms::THREE)) {
                 if (form_ == Forms::THREE)
-                        time_to_next_bullet_.reset(ms(350/2));
+                        time_to_next_large_bullet_.reset(ms(350/2));
                 else
-                        time_to_next_bullet_.reset(ms(350));
+                        time_to_next_large_bullet_.reset(ms(350));
                 fireLargeBullet();
-        }
-
-        if (state_ == States::NORMAL &&
-            (form_ == Forms::ONE || form_ == Forms::THREE)) {
-                GameState::enemy_bullets.emplace_back(
-                        std::make_shared<ElectricBeam>(
-                                position_.x + 68, position_.y = 220));
-                GameState::enemy_bullets.emplace_back(
-                        std::make_shared<ElectricBeam>(
-                                position_.x + 270, position_.y = 220));
         }
 
         if (state_ == States::DOWN && position_.y > 20) {
@@ -106,12 +100,89 @@ void Boss2::draw(Graphics& graphics)
         healthbar_.draw(graphics);
 }
 
+void Boss2::fireElectricBeam()
+{
+        GameState::background_enemy_bullets.emplace_back(
+                std::make_shared<ElectricBeam>(
+                        position_.x + 68, position_.y + 220));
+        GameState::background_enemy_bullets.emplace_back(
+                std::make_shared<ElectricBeam>(
+                        position_.x + 270, position_.y + 220));
+}
+
 void Boss2::fireBullet()
 {
+        if (GameState::ship->dead())
+                return;
+
+        if (form_ == Forms::ONE) {
+                angle_ += 0.03f;
+                auto angle2_ = angle_ + 0.5f;
+                auto d = Vector<float> {
+                        std::abs(cosf(-angle_ * 2 * M_PI)),
+                        std::abs(sinf(-angle_ * 2 * M_PI))
+                };
+                auto d2 = Vector<float> {
+                        std::abs(cosf(-angle2_ * 2 * M_PI)),
+                        std::abs(sinf(-angle2_ * 2 * M_PI))
+                };
+                d.normalize();
+                d2.normalize();
+
+                for (int i = 0; i < 3; i++) {
+                        GameState::enemy_bullets.emplace_back(
+                                std::make_shared<ReflectiveBeam>(
+                                        position_.x + 120 + d.x * i * 5,
+                                        position_.y + 200 + d.y * i * 5,
+                                        d.x, d.y,
+                                        position_.x + 98, position_.y + 290));
+                        GameState::enemy_bullets.emplace_back(
+                                std::make_shared<ReflectiveBeam>(
+                                        position_.x + 240 + d2.x * i * 5,
+                                        position_.y + 200 + d2.y * i * 5,
+                                        d2.x, d2.y,
+                                        position_.x + 98, position_.y + 290));
+                }
+        } else if (form_ == Forms::TWO) {
+                angle_ += 0.03f;
+                float speed = 2.f;
+
+                for (int i = 0; i < 2; i++) {
+                        GameState::enemy_bullets.emplace_back(
+                                std::make_shared<Bullet>(
+                                        position_.x + 55, position_.y + 40,
+                                        cosf(-angle_ * 2 * M_PI + i * M_PI) / 2,
+                                        std::abs(sinf(-angle_ * 2 * M_PI + i * M_PI)),
+                                        speed));
+                        GameState::enemy_bullets.emplace_back(
+                                std::make_shared<Bullet>(
+                                        position_.x + 315, position_.y + 40,
+                                        cosf(angle_ * 2 * M_PI + i * M_PI) / 2,
+                                        std::abs(sinf(angle_ * 2 * M_PI + i * M_PI)),
+                                        speed));
+                }
+        }
 }
 
 void Boss2::fireLargeBullet()
 {
+        if (GameState::ship->dead())
+                return;
+
+        angle_ += 0.03f;
+
+        GameState::enemy_bullets.emplace_back(
+                std::make_shared<ElectricBall>(
+                        position_.x + 55, position_.y + 40,
+                        cosf(-angle_ * 2 * M_PI) / 2,
+                        std::abs(sinf(-angle_ * 2 * M_PI)),
+                        1));
+        GameState::enemy_bullets.emplace_back(
+                std::make_shared<ElectricBall>(
+                        position_.x + 315, position_.y + 40,
+                        cosf(angle_ * 2 * M_PI) / 2,
+                        std::abs(sinf(angle_ * 2 * M_PI)),
+                        1));
 }
 
 void Boss2::nextForm()

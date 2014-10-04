@@ -67,7 +67,7 @@ Texture Graphics::loadImage(const std::string& file)
 
 void Graphics::blit(const Texture& texture, int src_x, int src_y, int x,
 		    int y, int sprite_w, int sprite_h, BlitFlags flags,
-                    const Color* color)
+                    const Color* color, float scale_w, float scale_h)
 {
 	assert(texture.w > 0);
 
@@ -98,14 +98,14 @@ void Graphics::blit(const Texture& texture, int src_x, int src_y, int x,
 
 	// Top right
 	glTexCoord2f(tx, sy);
-	glVertex3f( x + sprite_w, y, 0 );
+	glVertex3f( x + sprite_w * scale_w, y, 0 );
 
 	// Bottom-right vertex (corner)
 	glTexCoord2f(tx, ty);
-	glVertex3f( x + sprite_w, y + sprite_h, 0 );
+	glVertex3f( x + sprite_w * scale_w, y + sprite_h * scale_h, 0 );
 
 	// Bottom left
 	glTexCoord2f(sx, ty);
-	glVertex3f( x, y + sprite_h, 0 );
+	glVertex3f( x, y + sprite_h * scale_h, 0 );
 	glEnd();
 }

@@ -28,7 +28,7 @@ public:
 	int bombs() { return bombs_; }
 	Bomb* bomb() { return bomb_.get(); }
 
-	std::vector<Bullet> bullets() { return bullets_; }
+	std::vector<Bullet>& bullets() { return bullets_; }
 
 private:
         bool game_over_;
