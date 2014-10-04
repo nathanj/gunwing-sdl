@@ -2,16 +2,17 @@
 
 #include "sprite.h"
 
-class ReflectiveBeam : public Sprite {
-public:
+class ReflectiveBeam : public Sprite
+{
+  public:
         static Texture image_;
-        static void loadContent(Graphics& graphics);
+        static void loadContent(Graphics &graphics);
 
-        ReflectiveBeam(float x, float y, float dx, float dy,
-                       float left_wall, float right_wall);
+        ReflectiveBeam(float x, float y, float dx, float dy, float left_wall,
+                       float right_wall);
         void update(std::chrono::milliseconds delta);
-        void draw(Graphics& graphics);
+        void draw(Graphics &graphics);
 
-private:
+  private:
         float left_wall_, right_wall_;
 };

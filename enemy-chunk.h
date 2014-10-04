@@ -3,16 +3,17 @@
 #include "sprite.h"
 #include "timer.h"
 
-class EnemyChunk : public Sprite {
-public:
+class EnemyChunk : public Sprite
+{
+  public:
         static Texture images_[3];
-        static void loadContent(Graphics& graphics);
+        static void loadContent(Graphics &graphics);
 
         EnemyChunk(float x, float y);
         void update(std::chrono::milliseconds delta);
-        void draw(Graphics& graphics);
+        void draw(Graphics &graphics);
 
-protected:
+  protected:
         float time_;
         int type_;
         float max_alpha_;
@@ -20,5 +21,5 @@ protected:
         int r_, g_, b_;
 };
 
-void createChunks(const Vector<float>& position,
-		  const Vector<int>& dimensions, int chunks = 4);
+void createChunks(const Vector<float> &position, const Vector<int> &dimensions,
+                  int chunks = 4);

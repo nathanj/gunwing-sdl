@@ -10,8 +10,8 @@ using ms = std::chrono::milliseconds;
 
 Texture Boss::image_;
 
-Boss::Boss(float x, float y) :
-        healthbar_(health_, max_health_, healthbar_markers_)
+Boss::Boss(float x, float y)
+    : healthbar_(health_, max_health_, healthbar_markers_)
 {
         position_ = {x, y};
         direction_ = {0, 1};
@@ -23,16 +23,16 @@ Boss::Boss(float x, float y) :
         shrapnel_rounds_ = 5;
         fire_left_ = true;
 
-        geometry_.push_back( {50, 30, 50, 170} );
-        geometry_.push_back( {300, 30, 50, 170} );
-        geometry_.push_back( {95, 80, 50, 60} );
-        geometry_.push_back( {250, 85, 50, 60} );
-        geometry_.push_back( {156, 16, 85, 170} );
-        geometry_.push_back( {170, 8, 50, 200} );
-        geometry_.push_back( {183, 8, 30, 230} );
+        geometry_.push_back({50, 30, 50, 170});
+        geometry_.push_back({300, 30, 50, 170});
+        geometry_.push_back({95, 80, 50, 60});
+        geometry_.push_back({250, 85, 50, 60});
+        geometry_.push_back({156, 16, 85, 170});
+        geometry_.push_back({170, 8, 50, 200});
+        geometry_.push_back({183, 8, 30, 230});
 }
 
-void Boss::loadContent(Graphics& graphics)
+void Boss::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("boss2.png");
 }
@@ -44,13 +44,14 @@ void Boss::update(std::chrono::milliseconds delta)
         healthbar_.update(delta);
 
         if (state_ != States::DOWN && !invulnerable_.active()) {
-                for (auto& b : GameState::ship->bullets()) {
+                for (auto &b : GameState::ship->bullets()) {
                         if (!b.dead() && collides(b)) {
                                 b.dead(true);
                                 health_ -= b.strength();
                         }
                 }
-                if (GameState::ship->bomb()) {
+                if (GameState::ship->bomb() &&
+                    collides(*GameState::ship->bomb())) {
                         auto dps = GameState::ship->bomb()->damage_per_second();
                         health_ -= dps * delta.count() / 1000.f;
                 }
@@ -64,17 +65,17 @@ void Boss::update(std::chrono::milliseconds delta)
 
         if (!time_to_next_bullet_.active() && state_ != States::DOWN) {
                 switch (form_) {
-                case ONE:
-                        time_to_next_bullet_.reset(ms(30 * 70));
-                        break;
-                case TWO:
-                        time_to_next_bullet_.reset(ms(70));
-                        break;
-                case THREE:
-                        time_to_next_bullet_.reset(ms(50));
-                        break;
-                default:
-                        assert(0);
+                        case ONE:
+                                time_to_next_bullet_.reset(ms(30 * 70));
+                                break;
+                        case TWO:
+                                time_to_next_bullet_.reset(ms(70));
+                                break;
+                        case THREE:
+                                time_to_next_bullet_.reset(ms(50));
+                                break;
+                        default:
+                                assert(0);
                 }
                 fireBullet();
         }
@@ -101,7 +102,7 @@ void Boss::update(std::chrono::milliseconds delta)
         position_.y += direction_.y * speed_;
 }
 
-void Boss::draw(Graphics& graphics)
+void Boss::draw(Graphics &graphics)
 {
         graphics.blit(image_, 0, 0, position_.x, position_.y);
         healthbar_.draw(graphics);
@@ -120,13 +121,12 @@ void Boss::fireBullet()
 
 void Boss::fireShrapnel()
 {
-        Vector<float> pos = { position_.x + 60, position_.y + 200 };
+        Vector<float> pos = {position_.x + 60, position_.y + 200};
         if (!fire_left_)
-                pos = { position_.x + 310, position_.y + 200 };
+                pos = {position_.x + 310, position_.y + 200};
 
-        GameState::enemy_bullets.push_back(
-                std::make_shared<ShrapnelBomb>(
-                        pos.x, pos.y, 0, 1, shrapnel_rounds_));
+        GameState::enemy_bullets.push_back(std::make_shared<ShrapnelBomb>(
+            pos.x, pos.y, 0, 1, shrapnel_rounds_));
 
         fire_left_ = !fire_left_;
         shrapnel_rounds_ += 4;
@@ -134,23 +134,17 @@ void Boss::fireShrapnel()
 
 void Boss::fireCircularBullets()
 {
-        angle_ += 0.03f; // todo - delta
+        angle_ += 0.03f;  // todo - delta
 
         for (int i = 0; i < 4; i++) {
-                GameState::enemy_bullets.push_back(
-                        std::make_shared<Bullet>(
-                                position_.x + image_.w / 4 - 20,
-                                position_.y + 120,
-                                cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                1.2));
-                GameState::enemy_bullets.push_back(
-                        std::make_shared<Bullet>(
-                                position_.x + 3*image_.w / 4 + 15,
-                                position_.y + 120,
-                                cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
-                                1.2));
+                GameState::enemy_bullets.push_back(std::make_shared<Bullet>(
+                    position_.x + image_.w / 4 - 20, position_.y + 120,
+                    cosf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                    sinf(-angle_ * 2 * M_PI + i * 2 * M_PI / 4), 1.2));
+                GameState::enemy_bullets.push_back(std::make_shared<Bullet>(
+                    position_.x + 3 * image_.w / 4 + 15, position_.y + 120,
+                    cosf(angle_ * 2 * M_PI + i * 2 * M_PI / 4),
+                    sinf(angle_ * 2 * M_PI + i * 2 * M_PI / 4), 1.2));
         }
 }
 

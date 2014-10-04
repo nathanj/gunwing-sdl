@@ -1,7 +1,7 @@
 #include "electric-beam.h"
 
 Texture ElectricBeam::image_;
-void ElectricBeam::loadContent(Graphics& graphics)
+void ElectricBeam::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("elecbeam.png");
 }
@@ -12,7 +12,7 @@ ElectricBeam::ElectricBeam(float x, float y, float dx, float dy, float speed)
         direction_ = {dx, dy};
         direction_.normalize();
         speed_ = speed;
-        geometry_.push_back( {3, 0, 26, 32} );
+        geometry_.push_back({3, 0, 26, 32});
 }
 
 void ElectricBeam::update(std::chrono::milliseconds delta)
@@ -27,7 +27,7 @@ void ElectricBeam::update(std::chrono::milliseconds delta)
                 dead_ = true;
 }
 
-void ElectricBeam::draw(Graphics& graphics)
+void ElectricBeam::draw(Graphics &graphics)
 {
         graphics.blit(image_, 0, 0, position_.x, position_.y);
 }

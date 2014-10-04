@@ -3,12 +3,12 @@
 
 Texture FontSmall::image_;
 
-void FontSmall::loadContent(Graphics& graphics)
+void FontSmall::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("smallfont.png");
 }
 
-void FontSmall::draw(Graphics& graphics, int number, float x, float y,
+void FontSmall::draw(Graphics &graphics, int number, float x, float y,
                      float alpha)
 {
         std::string output = "+" + std::to_string(number);

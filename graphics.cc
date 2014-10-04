@@ -12,100 +12,99 @@
 
 #include <SDL_image.h>
 
-static void printSDLError(const std::string& msg)
+static void printSDLError(const std::string &msg)
 {
-	std::cout << msg << ": " << SDL_GetError() << std::endl;
+        std::cout << msg << ": " << SDL_GetError() << std::endl;
 }
 
-Graphics::Graphics(SDL_Window* win) :
-	window(win)
+Graphics::Graphics(SDL_Window *win) : window(win)
 {
-	SDL_GL_CreateContext(win);
+        SDL_GL_CreateContext(win);
 
-	glClearColor(0, 0, 0, 0);
-	glEnable(GL_TEXTURE_2D);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+        glClearColor(0, 0, 0, 0);
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 }
 
-Texture Graphics::loadImage(const std::string& file)
+Texture Graphics::loadImage(const std::string &file)
 {
-	// Load up the cached texture if possible.
-	auto p = texture_map.find(file);
-	if (p != texture_map.end())
-		return p->second;
+        // Load up the cached texture if possible.
+        auto p = texture_map.find(file);
+        if (p != texture_map.end())
+                return p->second;
 
-	// Otherwise load the image and store it in the map.
-	auto surface = std::unique_ptr<SDL_Surface, void(*)(SDL_Surface*)>(
-		IMG_Load(file.c_str()), &SDL_FreeSurface);
-	if (surface == NULL) {
-		printSDLError("IMG_Load " + file);
-		abort();
-	}
+        // Otherwise load the image and store it in the map.
+        auto surface = std::unique_ptr<SDL_Surface, void (*)(SDL_Surface *)>(
+            IMG_Load(file.c_str()), &SDL_FreeSurface);
+        if (surface == NULL) {
+                printSDLError("IMG_Load " + file);
+                abort();
+        }
 
-	GLuint id;
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        GLuint id;
+        glGenTextures(1, &id);
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexImage2D(GL_TEXTURE_2D, 0, surface->format->BytesPerPixel,
-                     surface->w, surface->h, 0, GL_RGBA,
-                     GL_UNSIGNED_BYTE, surface->pixels);
+                     surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                     surface->pixels);
 
-	Texture t{id, surface->w, surface->h};
+        Texture t{id, surface->w, surface->h};
 
-	texture_map[file] = t;
+        texture_map[file] = t;
 
-	return t;
+        return t;
 }
 
-void Graphics::blit(const Texture& texture, int src_x, int src_y, int x,
-		    int y, int sprite_w, int sprite_h, BlitFlags flags,
-                    const Color* color, float scale_w, float scale_h)
+void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
+                    int sprite_w, int sprite_h, BlitFlags flags,
+                    const Color *color, float scale_w, float scale_h)
 {
-	assert(texture.w > 0);
+        assert(texture.w > 0);
 
         sprite_w = sprite_w == -1 ? texture.w : sprite_w;
         sprite_h = sprite_h == -1 ? texture.h : sprite_h;
 
-	float sx = src_x * 1.0f / texture.w;
-	float tx = (src_x + sprite_w) * 1.0f / texture.w;
-	float sy = src_y * 1.0f / texture.h;
-	float ty = (src_y + sprite_h) * 1.0f / texture.h;
+        float sx = src_x * 1.0f / texture.w;
+        float tx = (src_x + sprite_w) * 1.0f / texture.w;
+        float sy = src_y * 1.0f / texture.h;
+        float ty = (src_y + sprite_h) * 1.0f / texture.h;
 
-	if ((flags & BlitFlags::HORIZONTAL_FLIP) == BlitFlags::HORIZONTAL_FLIP)
-		std::swap(sx, tx);
-	if ((flags & BlitFlags::VERTICAL_FLIP) == BlitFlags::VERTICAL_FLIP)
-		std::swap(sy, ty);
+        if ((flags & BlitFlags::HORIZONTAL_FLIP) == BlitFlags::HORIZONTAL_FLIP)
+                std::swap(sx, tx);
+        if ((flags & BlitFlags::VERTICAL_FLIP) == BlitFlags::VERTICAL_FLIP)
+                std::swap(sy, ty);
 
-	glBindTexture(GL_TEXTURE_2D, texture.id);
+        glBindTexture(GL_TEXTURE_2D, texture.id);
 
         if (color)
                 glColor4f(color->r, color->g, color->b, color->a);
         else
                 glColor4f(1, 1, 1, 1);
 
-	glBegin( GL_QUADS );
-	// Top-left vertex (corner)
-	glTexCoord2f(sx, sy);
-	glVertex3f( x, y, 0 );
+        glBegin(GL_QUADS);
+        // Top-left vertex (corner)
+        glTexCoord2f(sx, sy);
+        glVertex3f(x, y, 0);
 
-	// Top right
-	glTexCoord2f(tx, sy);
-	glVertex3f( x + sprite_w * scale_w, y, 0 );
+        // Top right
+        glTexCoord2f(tx, sy);
+        glVertex3f(x + sprite_w * scale_w, y, 0);
 
-	// Bottom-right vertex (corner)
-	glTexCoord2f(tx, ty);
-	glVertex3f( x + sprite_w * scale_w, y + sprite_h * scale_h, 0 );
+        // Bottom-right vertex (corner)
+        glTexCoord2f(tx, ty);
+        glVertex3f(x + sprite_w * scale_w, y + sprite_h * scale_h, 0);
 
-	// Bottom left
-	glTexCoord2f(sx, ty);
-	glVertex3f( x, y + sprite_h * scale_h, 0 );
-	glEnd();
+        // Bottom left
+        glTexCoord2f(sx, ty);
+        glVertex3f(x, y + sprite_h * scale_h, 0);
+        glEnd();
 }

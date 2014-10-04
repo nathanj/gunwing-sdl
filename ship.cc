@@ -14,13 +14,13 @@
 Texture Ship::image_shield_;
 Texture Ship::image_;
 
-Ship::Ship() :
-        invinicibility_time_(std::chrono::milliseconds(0)),
-	respawn_time_(std::chrono::milliseconds(0)),
-	bullet_cooldown_(std::chrono::milliseconds(50))
+Ship::Ship()
+    : invinicibility_time_(std::chrono::milliseconds(0)),
+      respawn_time_(std::chrono::milliseconds(0)),
+      bullet_cooldown_(std::chrono::milliseconds(50))
 {
         position_ = {220, 520};
-        direction_ = {0,0};
+        direction_ = {0, 0};
         speed_ = 5.0;
         lives_ = 2;
         invinicibility_time_.stop();
@@ -28,108 +28,116 @@ Ship::Ship() :
         game_over_ = false;
         bombs_ = 3;
         type_ = 1;
-        geometry_.push_back( {14, 14, 2, 2} );
+        geometry_.push_back({14, 14, 2, 2});
 }
 
 // static
-void Ship::loadContent(Graphics& graphics)
+void Ship::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("ship.png");
         image_shield_ = graphics.loadImage("shield.png");
 }
 
-void Ship::handleInput(const Input& input)
+void Ship::handleInput(const Input &input)
 {
-	Vector<float> axis = input.getAxis();
-	if (axis.x != 0 || axis.y != 0) {
-		direction_ = axis;
-		direction_.normalize();
-	} else {
-		direction_ = {0, 0};
+        Vector<float> axis = input.getAxis();
+        if (axis.x != 0 || axis.y != 0) {
+                direction_ = axis;
+                direction_.normalize();
+        } else {
+                direction_ = {0, 0};
 
-		if (input.isKeyHeld(SDLK_LEFT))
-			direction_.x = -1;
-		else if (input.isKeyHeld(SDLK_RIGHT))
-			direction_.x = 1;
+                if (input.isKeyHeld(SDLK_LEFT))
+                        direction_.x = -1;
+                else if (input.isKeyHeld(SDLK_RIGHT))
+                        direction_.x = 1;
 
-		if (input.isKeyHeld(SDLK_DOWN))
-			direction_.y = 1;
-		else if (input.isKeyHeld(SDLK_UP))
-			direction_.y = -1;
+                if (input.isKeyHeld(SDLK_DOWN))
+                        direction_.y = 1;
+                else if (input.isKeyHeld(SDLK_UP))
+                        direction_.y = -1;
 
-		direction_.normalize();
-	}
+                direction_.normalize();
+        }
 
-        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton()))
+        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton(0)))
                 fireBullet();
 
-        if (input.isKeyHeld(SDLK_b))
+        if (input.isKeyHeld(SDLK_b) || input.getButton(1))
                 fireBomb();
 }
 
 void Ship::fireBullet()
 {
-	if (bullet_cooldown_.active())
-		return;
+        if (bullet_cooldown_.active())
+                return;
 
-	bullets_.emplace_back(position_.x + image_.w / 2 - 16,
-			      position_.y + 20, 0, -1, 15, 50, 2);
-	bullets_.emplace_back(position_.x + image_.w / 2 + 8,
-			      position_.y + 20, 0, -1, 15, 50, 2);
+        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20,
+                              0, -1, 15, 50, 2);
+        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20,
+                              0, -1, 15, 50, 2);
         bullet_cooldown_.reset();
 }
 
 void Ship::fireBomb()
 {
-	if (!bomb_ && bombs_ > 0) {
-		bomb_ = std::make_shared<Bomb>(position_.x, position_.y);
-		invinicibility_time_.reset();
-		bombs_--;
-		bullets_.clear();
-	}
+        if (!bomb_ && bombs_ > 0) {
+                bomb_ = std::make_shared<Bomb>(position_.x, position_.y);
+                invinicibility_time_.reset();
+                bombs_--;
+                bullets_.clear();
+        }
 }
 
 void Ship::update(std::chrono::milliseconds delta)
 {
         bullet_cooldown_.update(delta);
         invinicibility_time_.update(delta);
+        if (bomb_)
+                bomb_->update(delta);
 
-	if (dead_) {
-		respawn_time_.update(delta);
-		if (!respawn_time_.active()) {
+        if (dead_) {
+                respawn_time_.update(delta);
+                if (!respawn_time_.active()) {
                         // todo
                         respawn();
-			//if (lives_ >= 0)
-			//	respawn();
-			//else
-			//	game_over_ = true;
-		}
-		return;
-	}
+                        // if (lives_ >= 0)
+                        //	respawn();
+                        // else
+                        //	game_over_ = true;
+                }
+                return;
+        }
 
-        for (const auto& b : GameState::background_enemy_bullets)
+        for (const auto &b : GameState::background_enemy_bullets)
                 handleCollisions(*b);
-        for (const auto& b : GameState::enemy_bullets)
+        for (const auto &b : GameState::enemy_bullets)
                 handleCollisions(*b);
-        for (const auto& b : GameState::enemies)
+        for (const auto &b : GameState::enemies)
                 handleCollisions(*b);
 
         // todo - use delta
         position_.x += direction_.x * speed_;
         position_.y += direction_.y * speed_;
 
-        position_.x = clamp(position_.x, 0.0f, 1.0f * Graphics::SCREEN_WIDTH - image_.w);
-        position_.y = clamp(position_.y, 0.0f, 1.0f * Graphics::SCREEN_HEIGHT - image_.h);
+        position_.x =
+            clamp(position_.x, 0.0f, 1.0f * Graphics::SCREEN_WIDTH - image_.w);
+        position_.y =
+            clamp(position_.y, 0.0f, 1.0f * Graphics::SCREEN_HEIGHT - image_.h);
 
-	collectMedals();
+        collectMedals();
 
-        for (auto& b : bullets_) b.update(delta);
-	remove_dead(bullets_);
+        for (auto &b : bullets_)
+                b.update(delta);
+        remove_dead(bullets_);
+
+        if (bomb_ && bomb_->dead())
+                bomb_.reset();
 
         medal_plus_.update(delta);
 }
 
-void Ship::handleCollisions(const Sprite& sprite)
+void Ship::handleCollisions(const Sprite &sprite)
 {
         if (!sprite.dead() && collides(sprite)) {
                 if (!invinicibility_time_.active())
@@ -139,49 +147,53 @@ void Ship::handleCollisions(const Sprite& sprite)
 
 void Ship::collectMedals()
 {
-	for(Medal& m : GameState::medals) {
-		if (m.obtainable() && collides(m)) {
-			medal_count_++;
-			score(score() + medal_count_);
+        for (Medal &m : GameState::medals) {
+                if (m.obtainable() && collides(m)) {
+                        medal_count_++;
+                        score(score() + medal_count_);
                         medal_plus_.activate(medal_count_);
-			m.dead(true);
-		}
-	}
+                        m.dead(true);
+                }
+        }
 }
 
-void Ship::draw(Graphics& graphics)
+void Ship::draw(Graphics &graphics)
 {
         if (dead_)
                 return;
 
-        for (auto& b : bullets_) b.draw(graphics);
+        for (auto &b : bullets_)
+                b.draw(graphics);
         medal_plus_.draw(graphics);
 
         graphics.blit(image_, 0, 0, position_.x, position_.y);
         if (invinicibility_time_.active()) {
                 float fade = invinicibility_time_.percent_remaining();
                 Color color{1, 1, 1, fade};
-                graphics.blit(image_shield_, 0, 0, position_.x - 8, position_.y - 8,
-                              -1, -1, Graphics::BlitFlags::NONE, &color);
+                graphics.blit(image_shield_, 0, 0, position_.x - 8,
+                              position_.y - 8, -1, -1,
+                              Graphics::BlitFlags::NONE, &color);
         }
+
+        if (bomb_)
+                bomb_->draw(graphics);
 }
 
 void Ship::die()
 {
-	dead_ = true;
-	lives_--;
-	bullets_.clear();
-	respawn_time_.reset(std::chrono::milliseconds(2500));
-        auto dimensions = Vector<int>{ image_.w, image_.h };
+        dead_ = true;
+        lives_--;
+        bullets_.clear();
+        respawn_time_.reset(std::chrono::milliseconds(2500));
+        auto dimensions = Vector<int>{image_.w, image_.h};
         createChunks(position_, dimensions, 50);
 }
 
 void Ship::respawn()
 {
-	dead_ = false;
-	invinicibility_time_.reset(std::chrono::milliseconds(4000));
-
-	position_.y = 500;
-	bombs_ = 3;
-	medal_count_ = 1;
+        dead_ = false;
+        invinicibility_time_.reset(std::chrono::milliseconds(4000));
+        position_.y = 500;
+        bombs_ = 3;
+        // medal_count_ = 1;
 }

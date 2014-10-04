@@ -2,7 +2,8 @@
 
 #include "stage.h"
 
-class Stage1 : public Stage {
-public:
-	Stage1();
+class Stage1 : public Stage
+{
+  public:
+        Stage1();
 };

@@ -1,7 +1,7 @@
 #include "electric-ball.h"
 
 Texture ElectricBall::image_;
-void ElectricBall::loadContent(Graphics& graphics)
+void ElectricBall::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("elecball.png");
 }
@@ -12,7 +12,7 @@ ElectricBall::ElectricBall(float x, float y, float dx, float dy, float speed)
         direction_ = {dx, dy};
         direction_.normalize();
         speed_ = speed;
-        geometry_.push_back( {4, 4, image_.w - 8.f, image_.h - 8.f} );
+        geometry_.push_back({4, 4, image_.w - 8.f, image_.h - 8.f});
 }
 
 void ElectricBall::update(std::chrono::milliseconds delta)
@@ -27,7 +27,7 @@ void ElectricBall::update(std::chrono::milliseconds delta)
                 dead_ = true;
 }
 
-void ElectricBall::draw(Graphics& graphics)
+void ElectricBall::draw(Graphics &graphics)
 {
         auto color = Color{1, 1, 1, 0.7f};
         graphics.blit(image_, 0, 0, position_.x, position_.y, -1, -1,

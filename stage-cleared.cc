@@ -1,8 +1,7 @@
 #include "stage-cleared.h"
 
-
 Texture StageCleared::image_;
-void StageCleared::loadContent(Graphics& graphics)
+void StageCleared::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("stageclear.png");
 }
@@ -20,7 +19,7 @@ void StageCleared::update(std::chrono::milliseconds delta)
                 dead_ = true;
 }
 
-void StageCleared::draw(Graphics& graphics)
+void StageCleared::draw(Graphics &graphics)
 {
         if (lifetime_.elapsed().count() < 1000)
                 return;

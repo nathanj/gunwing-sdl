@@ -5,13 +5,13 @@
 #include "warning.h"
 #include "boss2.h"
 
-#define MAKE_ENEMY(ms, x, y, dx, dy) \
-        enemies_to_appear_.push_back( \
-                std::make_pair( \
-                        std::chrono::milliseconds(ms), \
-                        std::make_shared<Enemy>(x, y, dx, dy)))
+#define MAKE_ENEMY(ms, x, y, dx, dy)                      \
+        enemies_to_appear_.push_back(                     \
+            std::make_pair(std::chrono::milliseconds(ms), \
+                           std::make_shared<Enemy>(x, y, dx, dy)))
 
-Stage2::Stage2() {
+Stage2::Stage2()
+{
         background_ = std::make_shared<Background>(Background::background3_);
 
         MAKE_ENEMY(2100, 480, 0, -1.f, 1.f);
@@ -61,17 +61,14 @@ Stage2::Stage2() {
         MAKE_ENEMY(11700, 500, 110, -1.f, 1.f);
 
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(12000),
-                        std::make_shared<ShrapnelEnemy>(80, -32)));
+            std::make_pair(std::chrono::milliseconds(12000),
+                           std::make_shared<ShrapnelEnemy>(80, -32)));
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(12000),
-                        std::make_shared<ShrapnelEnemy>(240, -32)));
+            std::make_pair(std::chrono::milliseconds(12000),
+                           std::make_shared<ShrapnelEnemy>(240, -32)));
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(12000),
-                        std::make_shared<ShrapnelEnemy>(400, -32)));
+            std::make_pair(std::chrono::milliseconds(12000),
+                           std::make_shared<ShrapnelEnemy>(400, -32)));
 
         MAKE_ENEMY(17100, 480, 0, -1.f, 1.f);
         MAKE_ENEMY(17200, 510, 40, -1.f, 1.f);
@@ -104,13 +101,11 @@ Stage2::Stage2() {
         MAKE_ENEMY(23700, 530, 180, -1.f, 1.f);
 
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(24000),
-                        std::make_shared<ShrapnelEnemy>(120, -32)));
+            std::make_pair(std::chrono::milliseconds(24000),
+                           std::make_shared<ShrapnelEnemy>(120, -32)));
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(24000),
-                        std::make_shared<ShrapnelEnemy>(360, -32)));
+            std::make_pair(std::chrono::milliseconds(24000),
+                           std::make_shared<ShrapnelEnemy>(360, -32)));
 
         MAKE_ENEMY(25100, 480, 0, -1.f, 1.f);
         MAKE_ENEMY(25200, 510, 40, -1.f, 1.f);
@@ -167,7 +162,7 @@ Stage2::Stage2() {
         MAKE_ENEMY(39700, -50, 130, 1.f, 1.f);
         MAKE_ENEMY(39700, 530, 130, -1.f, 1.f);
 
-        MAKE_ENEMY(40100, 50,  -20, 0.f, 1.f);
+        MAKE_ENEMY(40100, 50, -20, 0.f, 1.f);
         MAKE_ENEMY(40200, 100, -30, 0.f, 1.f);
         MAKE_ENEMY(40300, 150, -40, 0.f, 1.f);
         MAKE_ENEMY(40500, 200, -50, 0.f, 1.f);
@@ -177,13 +172,11 @@ Stage2::Stage2() {
         MAKE_ENEMY(41700, 400, -20, 0.f, 1.f);
 
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(44000),
-                        std::make_shared<ShrapnelEnemy>(120, -32)));
+            std::make_pair(std::chrono::milliseconds(44000),
+                           std::make_shared<ShrapnelEnemy>(120, -32)));
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(44000),
-                        std::make_shared<ShrapnelEnemy>(360, -32)));
+            std::make_pair(std::chrono::milliseconds(44000),
+                           std::make_shared<ShrapnelEnemy>(360, -32)));
 
         MAKE_ENEMY(45100, 480, 0, -1.f, 1.f);
         MAKE_ENEMY(45200, 510, 40, -1.f, 1.f);
@@ -240,7 +233,7 @@ Stage2::Stage2() {
         MAKE_ENEMY(59700, -50, 130, 1.f, 1.f);
         MAKE_ENEMY(59700, 530, 130, -1.f, 1.f);
 
-        MAKE_ENEMY(60100, 50,  -20, 0.f, 1.f);
+        MAKE_ENEMY(60100, 50, -20, 0.f, 1.f);
         MAKE_ENEMY(60200, 100, -30, 0.f, 1.f);
         MAKE_ENEMY(60300, 150, -40, 0.f, 1.f);
         MAKE_ENEMY(60500, 200, -50, 0.f, 1.f);
@@ -250,7 +243,6 @@ Stage2::Stage2() {
         MAKE_ENEMY(61700, 400, -20, 0.f, 1.f);
 
         enemies_to_appear_.push_back(
-                std::make_pair(
-                        std::chrono::milliseconds(70000),
-                        std::make_shared<Boss2>(40, -300)));
+            std::make_pair(std::chrono::milliseconds(70000),
+                           std::make_shared<Boss2>(40, -300)));
 }

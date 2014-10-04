@@ -3,7 +3,7 @@
 #include "game-state.h"
 
 Texture Bomb::image_;
-void Bomb::loadContent(Graphics& graphics)
+void Bomb::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("bomb.png");
 }
@@ -13,10 +13,10 @@ Bomb::Bomb(float x, float y)
         position_ = {x, y};
         direction_ = {0.f, 0.f};
 
-        geometry_.push_back( {50, 0, 200, 682} );
-        geometry_.push_back( {64, 591, 182, 207} );
-        geometry_.push_back( {85, 760, 135, 169} );
-        geometry_.push_back( {112, 890, 83, 90} );
+        geometry_.push_back({50, 0, 200, 682});
+        geometry_.push_back({64, 591, 182, 207});
+        geometry_.push_back({85, 760, 135, 169});
+        geometry_.push_back({112, 890, 83, 90});
 }
 
 void Bomb::update(std::chrono::milliseconds delta)
@@ -30,7 +30,7 @@ void Bomb::update(std::chrono::milliseconds delta)
         position_.y += -image_.h + 15;
 }
 
-void Bomb::draw(Graphics& graphics)
+void Bomb::draw(Graphics &graphics)
 {
         auto alpha = lifetime_.percent_remaining();
         auto color = Color{1, 1, 1, alpha};

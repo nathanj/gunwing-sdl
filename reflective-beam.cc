@@ -1,7 +1,7 @@
 #include "reflective-beam.h"
 
 Texture ReflectiveBeam::image_;
-void ReflectiveBeam::loadContent(Graphics& graphics)
+void ReflectiveBeam::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("elecbullet.png");
 }
@@ -15,7 +15,7 @@ ReflectiveBeam::ReflectiveBeam(float x, float y, float dx, float dy,
         speed_ = 3.f;
         left_wall_ = left_wall;
         right_wall_ = right_wall;
-        geometry_.push_back( {0, 0, (float) image_.w, (float) image_.h} );
+        geometry_.push_back({0, 0, (float)image_.w, (float)image_.h});
 }
 
 void ReflectiveBeam::update(std::chrono::milliseconds delta)
@@ -34,7 +34,7 @@ void ReflectiveBeam::update(std::chrono::milliseconds delta)
                 direction_.x = -direction_.x;
 }
 
-void ReflectiveBeam::draw(Graphics& graphics)
+void ReflectiveBeam::draw(Graphics &graphics)
 {
         graphics.blit(image_, 0, 0, position_.x, position_.y);
 }

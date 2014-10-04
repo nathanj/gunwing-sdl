@@ -6,7 +6,7 @@
 
 Texture Hud::image_bomb_;
 Texture Hud::image_medal_;
-void Hud::loadContent(Graphics& graphics)
+void Hud::loadContent(Graphics &graphics)
 {
         image_bomb_ = graphics.loadImage("bombicon.png");
         image_medal_ = graphics.loadImage("medal.png");
@@ -22,7 +22,7 @@ void Hud::update(std::chrono::milliseconds delta)
         bomb_current_alpha_ += (target_alpha - bomb_current_alpha_) / 10.f;
 }
 
-void Hud::draw(Graphics& graphics)
+void Hud::draw(Graphics &graphics)
 {
         drawLives(graphics);
         drawMedals(graphics);
@@ -31,26 +31,24 @@ void Hud::draw(Graphics& graphics)
         FontScore::draw(graphics, GameState::ship->score(), 0, 0);
 }
 
-void Hud::drawLives(Graphics& graphics)
+void Hud::drawLives(Graphics &graphics)
 {
         auto pos = Vector<float>{10.f, 30.f};
         for (int i = 0; i < GameState::ship->lives(); i++) {
-                const Texture& img = Ship::image_;
-                graphics.blit(img, 0, 0, pos.x, pos.y,
-                              -1, -1,
-                              Graphics::BlitFlags::NONE, NULL,
-                              0.75f, 0.75f);
+                const Texture &img = Ship::image_;
+                graphics.blit(img, 0, 0, pos.x, pos.y, -1, -1,
+                              Graphics::BlitFlags::NONE, NULL, 0.75f, 0.75f);
                 pos.x += 25.f;
         }
 }
 
-void Hud::drawMedals(Graphics& graphics)
+void Hud::drawMedals(Graphics &graphics)
 {
         auto pos = Vector<float>{300.f, 2.f};
         graphics.blit(image_medal_, 0, 0, pos.x, pos.y);
 }
 
-void Hud::drawBombs(Graphics& graphics)
+void Hud::drawBombs(Graphics &graphics)
 {
         // todo - alpha?
         auto color = Color{1, 1, 1, bomb_current_alpha_};
