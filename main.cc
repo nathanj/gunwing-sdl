@@ -34,6 +34,7 @@
 #include "utils.h"
 #include "warning.h"
 #include "title-screen.h"
+#include "high-score-list.h"
 
 static bool quit = false;
 
@@ -104,6 +105,8 @@ int main()
         ElectricBeam::loadContent(graphics);
         ReflectiveBeam::loadContent(graphics);
         Boss2::loadContent(graphics);
+
+        HighScoreList high_scores;
 
         FramesPerSecond fps;
         Input input;
