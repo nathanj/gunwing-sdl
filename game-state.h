@@ -14,6 +14,7 @@
 #include "stage.h"
 #include "title-screen.h"
 #include "input.h"
+#include "high-score-handler.h"
 
 class GameState
 {
@@ -22,6 +23,7 @@ class GameState
         static Hud *hud;
         static std::shared_ptr<Stage> stage;
         static std::shared_ptr<TitleScreen> title_screen;
+        static std::shared_ptr<HighScoreHandler> high_score_handler;
         static std::vector<std::shared_ptr<Sprite>> background_enemy_bullets;
         static std::vector<std::shared_ptr<Sprite>> enemy_bullets;
         static std::vector<std::shared_ptr<Sprite>> enemies;

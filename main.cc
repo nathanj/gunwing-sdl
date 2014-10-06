@@ -119,8 +119,6 @@ int main()
         if (SDL_NumJoysticks() > 0)
                 input.openJoystick(0);
 
-        // GameState::nextStage();
-
         auto last_tick = SDL_GetTicks();
         while (!quit) {
                 input.beginNewFrame();
@@ -135,11 +133,9 @@ int main()
                 last_tick = tick;
 
                 // Update
-                GameState::handleInput(input);
                 fps.update(delta);
+                GameState::handleInput(input);
                 GameState::update(delta);
-
-                // Render the scene
                 GameState::draw(graphics);
         }
 

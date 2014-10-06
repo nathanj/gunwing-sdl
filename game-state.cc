@@ -9,6 +9,7 @@ Ship *GameState::ship;
 Hud *GameState::hud;
 std::shared_ptr<Stage> GameState::stage;
 std::shared_ptr<TitleScreen> GameState::title_screen;
+std::shared_ptr<HighScoreHandler> GameState::high_score_handler;
 std::vector<std::shared_ptr<Sprite>> GameState::background_enemy_bullets;
 std::vector<std::shared_ptr<Sprite>> GameState::enemy_bullets;
 std::vector<std::shared_ptr<Sprite>> GameState::enemies;
@@ -23,11 +24,17 @@ void GameState::initialize()
 
 void GameState::handleInput(const Input &input)
 {
-        if (state_ == State::TITLE_SCREEN) {
-                if ((input.isKeyHeld(SDLK_SPACE) || input.getButton(0)))
+	switch (state_) {
+	case TITLE_SCREEN:
+                if (input.isKeyHeld(SDLK_SPACE) || input.getButton(0))
                         nextStage();
                 return;
-        }
+	case HIGH_SCORE:
+		high_score_handler->handleInput(input);
+		return;
+	default:
+		break;
+	}
 
         ship->handleInput(input);
 }
@@ -114,7 +121,10 @@ void GameState::nextStage()
                         stage = std::make_shared<Stage2>();
                         break;
                 case STAGE_TWO:
-                        state_ = State::GAME_OVER;
+                        state_ = State::HIGH_SCORE;
+			stage.reset();
+			high_score_handler =
+				std::make_shared<HighScoreHandler>();
                         break;
                 default:
                         break;
