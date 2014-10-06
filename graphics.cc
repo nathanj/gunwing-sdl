@@ -66,7 +66,7 @@ Texture Graphics::loadImage(const std::string &file)
 
 void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
                     int sprite_w, int sprite_h, BlitFlags flags,
-                    const Color *color, float scale_w, float scale_h)
+                    const Color *color, float scale_w, float scale_h, float angle)
 {
         assert(texture.w > 0);
 
@@ -84,6 +84,12 @@ void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
                 std::swap(sy, ty);
 
         glBindTexture(GL_TEXTURE_2D, texture.id);
+
+        glPushMatrix();
+
+        glTranslatef(x + sprite_w/2, y + sprite_h/2, 0.0f);
+        glRotatef(angle, 0, 1, 0);
+        glTranslatef(-(x + sprite_w/2), -(y + sprite_h/2), 0.0f);
 
         if (color)
                 glColor4f(color->r, color->g, color->b, color->a);
@@ -107,4 +113,6 @@ void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
         glTexCoord2f(sx, ty);
         glVertex3f(x, y + sprite_h * scale_h, 0);
         glEnd();
+
+        glPopMatrix();
 }

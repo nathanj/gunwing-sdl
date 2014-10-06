@@ -81,13 +81,16 @@ void Enemy::update(std::chrono::milliseconds delta)
         position_.x += direction_.x * speed_;
         position_.y += direction_.y * speed_;
 
-        // todo - angle
+        auto vx = GameState::ship->position().x - position_.x;
+        auto vy = GameState::ship->position().y - position_.y;
+        angle_ = radians_to_degrees(-std::atan2(-vy, vx) - M_PI / 2);
 }
 
 void Enemy::draw(Graphics &graphics)
 {
-        // todo - angle
-        graphics.blit(image_, 0, 0, position_.x, position_.y);
+        graphics.blit(image_, 0, 0, position_.x, position_.y,
+                      -1, -1, Graphics::BlitFlags::NONE, NULL, 1, 1,
+                      angle_);
 }
 
 void Enemy::fireBullet()

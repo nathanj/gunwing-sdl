@@ -6,6 +6,18 @@
 #include "vector.h"
 
 template <typename T>
+T radians_to_degrees(T value)
+{
+	return value * 180.0f / M_PI;
+}
+
+template <typename T>
+T radians_to_rotation(T value)
+{
+	return radians_to_degrees(-(value + M_PI / 2));
+}
+
+template <typename T>
 T clamp(T value, T min, T max)
 {
         if (value < min)

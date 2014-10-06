@@ -32,7 +32,7 @@ class Graphics
         void blit(const Texture &texture, int src_x, int src_y, int x, int y,
                   int sprite_w = -1, int sprite_h = -1,
                   BlitFlags flags = BlitFlags::NONE, const Color *color = NULL,
-                  float scale_w = 1, float scale_h = 1);
+                  float scale_w = 1, float scale_h = 1, float angle = 0);
         void clear()
         {
                 glClear(GL_COLOR_BUFFER_BIT);

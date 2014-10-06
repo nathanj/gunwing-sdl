@@ -18,7 +18,7 @@ class Enemy : public Sprite
         Timer time_to_next_bullet_;
         Timer time_to_next_state_;
         const std::chrono::milliseconds time_between_bullets_{1500};
-        float angle_;
+        float angle_{0};
 
         enum class States
         {
