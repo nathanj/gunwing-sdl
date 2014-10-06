@@ -33,7 +33,7 @@ int HighScoreList::findPosition(int score)
 void HighScoreList::insert(std::string initials, int score)
 {
         auto it = std::find_if(std::begin(list_), std::end(list_),
-                               [&](std::pair<int, std::string> value) {
+                               [&](const std::pair<int, std::string>& value) {
                                        return score > value.first;
                                });
         if (it == list_.end())
