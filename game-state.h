@@ -15,6 +15,7 @@
 #include "title-screen.h"
 #include "input.h"
 #include "high-score-handler.h"
+#include "choose-pilot.h"
 
 class GameState
 {
@@ -24,6 +25,7 @@ class GameState
         static std::shared_ptr<Stage> stage;
         static std::shared_ptr<TitleScreen> title_screen;
         static std::shared_ptr<HighScoreHandler> high_score_handler;
+        static std::shared_ptr<ChoosePilot> choose_pilot;
         static std::vector<std::shared_ptr<Sprite>> background_enemy_bullets;
         static std::vector<std::shared_ptr<Sprite>> enemy_bullets;
         static std::vector<std::shared_ptr<Sprite>> enemies;

@@ -14,12 +14,12 @@
 Texture Ship::image_shield_;
 Texture Ship::image_;
 
-Ship::Ship()
+Ship::Ship(float x, float y)
     : invinicibility_time_(std::chrono::milliseconds(0)),
       respawn_time_(std::chrono::milliseconds(0)),
       bullet_cooldown_(std::chrono::milliseconds(50))
 {
-        position_ = {220, 520};
+        position_ = {x, y};
         direction_ = {0, 0};
         speed_ = 5.0;
         lives_ = 2;

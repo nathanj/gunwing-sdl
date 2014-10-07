@@ -10,6 +10,7 @@ Hud *GameState::hud;
 std::shared_ptr<Stage> GameState::stage;
 std::shared_ptr<TitleScreen> GameState::title_screen;
 std::shared_ptr<HighScoreHandler> GameState::high_score_handler;
+std::shared_ptr<ChoosePilot> GameState::choose_pilot;
 std::vector<std::shared_ptr<Sprite>> GameState::background_enemy_bullets;
 std::vector<std::shared_ptr<Sprite>> GameState::enemy_bullets;
 std::vector<std::shared_ptr<Sprite>> GameState::enemies;
@@ -29,20 +30,27 @@ void GameState::handleInput(const Input &input)
                 if (input.isKeyHeld(SDLK_SPACE) || input.getButton(0))
                         nextStage();
                 return;
+        case CHOOSE_PILOT:
+                choose_pilot->handleInput(input);
+                return;
         case HIGH_SCORE:
                 high_score_handler->handleInput(input);
                 return;
         default:
+                ship->handleInput(input);
                 break;
         }
-
-        ship->handleInput(input);
 }
 
 void GameState::update(std::chrono::milliseconds delta)
 {
         if (state_ == State::TITLE_SCREEN) {
                 title_screen->update(delta);
+                return;
+        } else if (state_ == State::CHOOSE_PILOT) {
+                choose_pilot->update(delta);
+                if (choose_pilot->finished())
+                        nextStage();
                 return;
         }
 
@@ -79,6 +87,10 @@ void GameState::draw(Graphics &graphics)
                 title_screen->draw(graphics);
                 graphics.flip();
                 return;
+        } else if (state_ == State::CHOOSE_PILOT) {
+                choose_pilot->draw(graphics);
+                graphics.flip();
+                return;
         }
 
         if (stage)
@@ -113,6 +125,10 @@ void GameState::nextStage()
 {
         switch (state_) {
         case TITLE_SCREEN:
+                state_ = State::CHOOSE_PILOT;
+                choose_pilot = std::make_shared<ChoosePilot>();
+                break;
+        case CHOOSE_PILOT:
                 state_ = State::STAGE_ONE;
                 stage = std::make_shared<Stage1>();
                 break;

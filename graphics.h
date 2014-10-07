@@ -43,7 +43,7 @@ class Graphics
         }
 
         static constexpr int SCREEN_WIDTH = 480;
-        static constexpr int SCREEN_HEIGHT = 680;
+        static constexpr int SCREEN_HEIGHT = 600;
 
         static float units_x(float pixels)
         {

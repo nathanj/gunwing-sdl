@@ -13,7 +13,7 @@ class Ship : public Sprite
         static Texture image_shield_;
         static Texture image_;
 
-        Ship();
+        Ship(float x = 220, float y = 520);
 
         static void loadContent(Graphics &graphics);
 
@@ -21,6 +21,7 @@ class Ship : public Sprite
         void handleInput(const Input &input);
         void update(std::chrono::milliseconds);
         void draw(Graphics &graphics);
+        void fireBullet();
 
         int score()
         {
@@ -65,7 +66,6 @@ class Ship : public Sprite
         Timer bullet_cooldown_;
         std::shared_ptr<Bomb> bomb_;
 
-        void fireBullet();
         void fireBomb();
         void die();
         void respawn();
