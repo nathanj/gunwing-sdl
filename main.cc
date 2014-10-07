@@ -112,11 +112,7 @@ int main()
 
         FramesPerSecond fps;
         Input input;
-        Ship ship;
-        Hud hud;
         GameState::initialize();
-        GameState::ship = &ship;
-        GameState::hud = &hud;
 
         if (SDL_NumJoysticks() > 0)
                 input.openJoystick(0);

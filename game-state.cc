@@ -5,8 +5,8 @@
 #include "stage2.h"
 
 // static
-Ship *GameState::ship;
-Hud *GameState::hud;
+std::shared_ptr<Ship> GameState::ship;
+std::shared_ptr<Hud> GameState::hud;
 std::shared_ptr<Stage> GameState::stage;
 std::shared_ptr<TitleScreen> GameState::title_screen;
 std::shared_ptr<HighScoreHandler> GameState::high_score_handler;
@@ -21,6 +21,8 @@ GameState::State GameState::state_{GameState::State::TITLE_SCREEN};
 void GameState::initialize()
 {
         title_screen = std::make_shared<TitleScreen>();
+	ship = std::make_shared<Ship>();
+	hud = std::make_shared<Hud>();
 }
 
 void GameState::handleInput(const Input &input)

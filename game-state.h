@@ -20,8 +20,8 @@
 class GameState
 {
   public:
-        static Ship *ship;
-        static Hud *hud;
+        static std::shared_ptr<Ship> ship;
+        static std::shared_ptr<Hud> hud;
         static std::shared_ptr<Stage> stage;
         static std::shared_ptr<TitleScreen> title_screen;
         static std::shared_ptr<HighScoreHandler> high_score_handler;
