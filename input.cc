@@ -65,16 +65,16 @@ bool Input::getButton(int index) const
 void Input::handleEvent(const SDL_Event &e)
 {
         switch (e.type) {
-                case SDL_KEYDOWN:
-                        if (!e.key.repeat)
-                                pressKey(e.key.keysym.sym);
-                        break;
-                case SDL_KEYUP:
-                        releaseKey(e.key.keysym.sym);
-                        break;
-                case SDL_MOUSEBUTTONDOWN:
-                        mouseClick(e.button.button, e.button.x, e.button.y);
-                        break;
+        case SDL_KEYDOWN:
+                if (!e.key.repeat)
+                        pressKey(e.key.keysym.sym);
+                break;
+        case SDL_KEYUP:
+                releaseKey(e.key.keysym.sym);
+                break;
+        case SDL_MOUSEBUTTONDOWN:
+                mouseClick(e.button.button, e.button.x, e.button.y);
+                break;
         }
 }
 

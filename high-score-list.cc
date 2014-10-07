@@ -6,8 +6,7 @@
 
 #include "utils.h"
 
-HighScoreList::HighScoreList() :
-        list_(5)
+HighScoreList::HighScoreList() : list_(5)
 {
         list_.reserve(6);
         loadHighScores();
@@ -33,9 +32,9 @@ int HighScoreList::findPosition(int score)
 void HighScoreList::insert(std::string initials, int score)
 {
         auto it = std::find_if(std::begin(list_), std::end(list_),
-                               [&](const std::pair<int, std::string>& value) {
-                                       return score > value.first;
-                               });
+                               [&](const std::pair<int, std::string> & value) {
+                return score > value.first;
+        });
         if (it == list_.end())
                 return;
 

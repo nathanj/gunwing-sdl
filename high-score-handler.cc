@@ -3,9 +3,11 @@
 void HighScoreHandler::handleInput(const Input &input)
 {
         if (input.wasKeyPressed(SDLK_UP))
-                initials_[initial_position_] = upChar(initials_[initial_position_]);
+                initials_[initial_position_] =
+                    upChar(initials_[initial_position_]);
         else if (input.wasKeyPressed(SDLK_DOWN))
-                initials_[initial_position_] = downChar(initials_[initial_position_]);
+                initials_[initial_position_] =
+                    downChar(initials_[initial_position_]);
 }
 
 char HighScoreHandler::upChar(char c)

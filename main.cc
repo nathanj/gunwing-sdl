@@ -49,12 +49,12 @@ static void handleEvents(Input &input)
 
         while (SDL_PollEvent(&e)) {
                 switch (e.type) {
-                        case SDL_QUIT:
-                                quit = true;
-                                break;
-                        default:
-                                input.handleEvent(e);
-                                break;
+                case SDL_QUIT:
+                        quit = true;
+                        break;
+                default:
+                        input.handleEvent(e);
+                        break;
                 }
         }
         input.handleJoystick(0);

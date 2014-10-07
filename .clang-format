@@ -10,7 +10,7 @@ BinPackParameters: true
 ColumnLimit:     80
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 DerivePointerBinding: true
-IndentCaseLabels: true
+IndentCaseLabels: false
 MaxEmptyLinesToKeep: 1
 ObjCSpaceBeforeProtocolList: false
 PenaltyBreakComment: 45

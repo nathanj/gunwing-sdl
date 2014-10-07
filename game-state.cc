@@ -24,17 +24,17 @@ void GameState::initialize()
 
 void GameState::handleInput(const Input &input)
 {
-	switch (state_) {
-	case TITLE_SCREEN:
+        switch (state_) {
+        case TITLE_SCREEN:
                 if (input.isKeyHeld(SDLK_SPACE) || input.getButton(0))
                         nextStage();
                 return;
-	case HIGH_SCORE:
-		high_score_handler->handleInput(input);
-		return;
-	default:
-		break;
-	}
+        case HIGH_SCORE:
+                high_score_handler->handleInput(input);
+                return;
+        default:
+                break;
+        }
 
         ship->handleInput(input);
 }
@@ -112,21 +112,20 @@ void GameState::convertBulletsToMedals()
 void GameState::nextStage()
 {
         switch (state_) {
-                case TITLE_SCREEN:
-                        state_ = State::STAGE_ONE;
-                        stage = std::make_shared<Stage1>();
-                        break;
-                case STAGE_ONE:
-                        state_ = State::STAGE_TWO;
-                        stage = std::make_shared<Stage2>();
-                        break;
-                case STAGE_TWO:
-                        state_ = State::HIGH_SCORE;
-			stage.reset();
-			high_score_handler =
-				std::make_shared<HighScoreHandler>();
-                        break;
-                default:
-                        break;
+        case TITLE_SCREEN:
+                state_ = State::STAGE_ONE;
+                stage = std::make_shared<Stage1>();
+                break;
+        case STAGE_ONE:
+                state_ = State::STAGE_TWO;
+                stage = std::make_shared<Stage2>();
+                break;
+        case STAGE_TWO:
+                state_ = State::HIGH_SCORE;
+                stage.reset();
+                high_score_handler = std::make_shared<HighScoreHandler>();
+                break;
+        default:
+                break;
         }
 }

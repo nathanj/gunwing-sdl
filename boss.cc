@@ -65,17 +65,17 @@ void Boss::update(std::chrono::milliseconds delta)
 
         if (!time_to_next_bullet_.active() && state_ != States::DOWN) {
                 switch (form_) {
-                        case ONE:
-                                time_to_next_bullet_.reset(ms(30 * 70));
-                                break;
-                        case TWO:
-                                time_to_next_bullet_.reset(ms(70));
-                                break;
-                        case THREE:
-                                time_to_next_bullet_.reset(ms(50));
-                                break;
-                        default:
-                                assert(0);
+                case ONE:
+                        time_to_next_bullet_.reset(ms(30 * 70));
+                        break;
+                case TWO:
+                        time_to_next_bullet_.reset(ms(70));
+                        break;
+                case THREE:
+                        time_to_next_bullet_.reset(ms(50));
+                        break;
+                default:
+                        assert(0);
                 }
                 fireBullet();
         }

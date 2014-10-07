@@ -8,13 +8,13 @@
 template <typename T>
 T radians_to_degrees(T value)
 {
-	return value * 180.0f / M_PI;
+        return value * 180.0f / M_PI;
 }
 
 template <typename T>
 T radians_to_rotation(T value)
 {
-	return radians_to_degrees(-(value + M_PI / 2));
+        return radians_to_degrees(-(value + M_PI / 2));
 }
 
 template <typename T>
