@@ -12,8 +12,9 @@ class Ship : public Sprite
   public:
         static Texture image_shield_;
         static Texture image_;
+        static Texture image2_;
 
-        Ship(float x = 220, float y = 520);
+        Ship(float x = 220, float y = 520, int type = 1);
 
         static void loadContent(Graphics &graphics);
 
@@ -51,6 +52,10 @@ class Ship : public Sprite
         {
                 return bullets_;
         }
+        void type(int type)
+        {
+                type_ = type;
+        }
 
   private:
         bool game_over_;
@@ -58,7 +63,7 @@ class Ship : public Sprite
         int lives_;
         int medal_count_{0};
         int score_{0};
-        int type_;
+        int type_{1};
         std::vector<Bullet> bullets_;
         MedalPlus medal_plus_;
         Timer invinicibility_time_;
@@ -71,4 +76,5 @@ class Ship : public Sprite
         void respawn();
         void collectMedals();
         void handleCollisions(const Sprite &sprite);
+        int bulletStrength();
 };

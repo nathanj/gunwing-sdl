@@ -89,7 +89,7 @@ void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
         glPushMatrix();
 
         glTranslatef(x + sprite_w / 2, y + sprite_h / 2, 0.0f);
-        glRotatef(angle, 0, 1, 0);
+        glRotatef(angle, 0, 0, 1);
         glTranslatef(-(x + sprite_w / 2), -(y + sprite_h / 2), 0.0f);
 
         if (color)

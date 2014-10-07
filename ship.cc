@@ -13,8 +13,9 @@
 // static
 Texture Ship::image_shield_;
 Texture Ship::image_;
+Texture Ship::image2_;
 
-Ship::Ship(float x, float y)
+Ship::Ship(float x, float y, int type)
     : invinicibility_time_(std::chrono::milliseconds(0)),
       respawn_time_(std::chrono::milliseconds(0)),
       bullet_cooldown_(std::chrono::milliseconds(50))
@@ -27,7 +28,7 @@ Ship::Ship(float x, float y)
         respawn_time_.stop();
         game_over_ = false;
         bombs_ = 3;
-        type_ = 1;
+        type_ = type;
         geometry_.push_back({14, 14, 2, 2});
 }
 
@@ -35,6 +36,7 @@ Ship::Ship(float x, float y)
 void Ship::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("ship.png");
+        image2_ = graphics.loadImage("ship2.png");
         image_shield_ = graphics.loadImage("shield.png");
 }
 
@@ -67,16 +69,41 @@ void Ship::handleInput(const Input &input)
                 fireBomb();
 }
 
+int Ship::bulletStrength()
+{
+        return type_ == 1 ? 30 : 25;
+}
+
 void Ship::fireBullet()
 {
         if (bullet_cooldown_.active())
                 return;
 
-        bullets_.emplace_back(position_.x + image_.w / 2 - 16, position_.y + 20,
-                              0, -1, 15, 50, 2);
-        bullets_.emplace_back(position_.x + image_.w / 2 + 8, position_.y + 20,
-                              0, -1, 15, 50, 2);
         bullet_cooldown_.reset();
+
+        bullets_.emplace_back(position_.x + image_.w / 2 - 4, position_.y, 0,
+                              -1, 15, bulletStrength(), 2);
+        if (type_ == 1) {
+                bullets_.emplace_back(position_.x + image_.w / 2 - 16,
+                                      position_.y + 20, 0, -1, 15,
+                                      bulletStrength(), 2);
+                bullets_.emplace_back(position_.x + image_.w / 2 + 8,
+                                      position_.y + 20, 0, -1, 15,
+                                      bulletStrength(), 2);
+        } else {
+                bullets_.emplace_back(position_.x + image_.w / 2 - 12,
+                                      position_.y + 15, -0.2f, -1, 15,
+                                      bulletStrength(), 2);
+                bullets_.emplace_back(position_.x + image_.w / 2 + 4,
+                                      position_.y + 15, 0.2f, -1, 15,
+                                      bulletStrength(), 2);
+                bullets_.emplace_back(position_.x + image_.w / 2 - 16,
+                                      position_.y + 20, -0.5f, -1, 15,
+                                      bulletStrength(), 2);
+                bullets_.emplace_back(position_.x + image_.w / 2 + 8,
+                                      position_.y + 20, 0.5f, -1, 15,
+                                      bulletStrength(), 2);
+        }
 }
 
 void Ship::fireBomb()
@@ -166,7 +193,8 @@ void Ship::draw(Graphics &graphics)
                 b.draw(graphics);
         medal_plus_.draw(graphics);
 
-        graphics.blit(image_, 0, 0, position_.x, position_.y);
+        const Texture &image = type_ == 1 ? image_ : image2_;
+        graphics.blit(image, 0, 0, position_.x, position_.y);
         if (invinicibility_time_.active()) {
                 float fade = invinicibility_time_.percent_remaining();
                 Color color{1, 1, 1, fade};

@@ -49,8 +49,10 @@ void GameState::update(std::chrono::milliseconds delta)
                 return;
         } else if (state_ == State::CHOOSE_PILOT) {
                 choose_pilot->update(delta);
-                if (choose_pilot->finished())
+                if (choose_pilot->finished()) {
+                        ship->type(choose_pilot->selection());
                         nextStage();
+                }
                 return;
         }
 

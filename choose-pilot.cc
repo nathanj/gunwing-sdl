@@ -62,4 +62,5 @@ void ChoosePilot::moveSelection()
                 final_position_ = {53, 410};
         else
                 final_position_ = {289, 410};
+        ship_->type(selection_);
 }
