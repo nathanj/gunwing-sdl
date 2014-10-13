@@ -36,6 +36,7 @@
 #include "title-screen.h"
 #include "high-score-list.h"
 #include "choose-pilot.h"
+#include "music.h"
 
 static bool quit = false;
 
@@ -83,6 +84,7 @@ int main()
         }
 
         Graphics graphics(win.get());
+	Music::initialize();
         Background::loadContent(graphics);
         Bomb::loadContent(graphics);
         Boss::loadContent(graphics);

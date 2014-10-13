@@ -4,6 +4,7 @@
 #include "shrapnel-enemy.h"
 #include "warning.h"
 #include "boss2.h"
+#include "music.h"
 
 #define MAKE_ENEMY(ms, x, y, dx, dy)                      \
         enemies_to_appear_.push_back(                     \
@@ -13,6 +14,8 @@
 Stage2::Stage2()
 {
         background_ = std::make_shared<Background>(Background::background3_);
+
+	Music::playMusic("stage.mp3");
 
         MAKE_ENEMY(2100, 480, 0, -1.f, 1.f);
         MAKE_ENEMY(2200, 510, 40, -1.f, 1.f);
