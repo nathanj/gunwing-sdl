@@ -27,12 +27,23 @@ class Graphics
                 NONE = 1 << 0, HORIZONTAL_FLIP = 1 << 1, VERTICAL_FLIP = 1 << 2,
         };
 
+	struct BlitOptions {
+		int sprite_w{-1};
+		int sprite_h{-1};
+		Color color{1, 1, 1, 1};  // tint color
+		float scale_w{1};         // width scale
+		float scale_h{1};         // height scale
+		float rotation{0};        // rotation in radians
+	};
+
         Graphics(SDL_Window *win);
         Texture loadImage(const std::string &file);
         void blit(const Texture &texture, int src_x, int src_y, int x, int y,
                   int sprite_w = -1, int sprite_h = -1,
                   BlitFlags flags = BlitFlags::NONE, const Color *color = NULL,
                   float scale_w = 1, float scale_h = 1, float angle = 0);
+        void blit(const Texture &texture, int src_x, int src_y, int x, int y,
+		  const BlitOptions& options);
         void clear()
         {
                 glClear(GL_COLOR_BUFFER_BIT);

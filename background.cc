@@ -56,10 +56,11 @@ void Background::update(std::chrono::milliseconds)
 
 void Background::draw(Graphics &graphics)
 {
+	Graphics::BlitOptions options;
+	options.color = Color{1, 1, 1, alpha_};
         auto color = Color{1, 1, 1, alpha_};
         graphics.blit(background_, position_[0].x, position_[0].y, 0, 0,
-                      background_.w, background_.h, Graphics::BlitFlags::NONE,
-                      &color);
+		      options);
         graphics.blit(background_, position_[0].x,
                       position_[0].y - background_.h, 0, 0, background_.w,
                       background_.h, Graphics::BlitFlags::NONE, &color);

@@ -65,6 +65,14 @@ Texture Graphics::loadImage(const std::string &file)
 }
 
 void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
+		    const BlitOptions& options)
+{
+	blit(texture, src_x, src_y, x, y, options.sprite_w, options.sprite_h,
+	     BlitFlags::NONE, &options.color, options.scale_w, options.scale_h,
+	     options.rotation);
+}
+
+void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
                     int sprite_w, int sprite_h, BlitFlags flags,
                     const Color *color, float scale_w, float scale_h,
                     float angle)
@@ -78,11 +86,6 @@ void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
         float tx = (src_x + sprite_w) * 1.0f / texture.w;
         float sy = src_y * 1.0f / texture.h;
         float ty = (src_y + sprite_h) * 1.0f / texture.h;
-
-        if ((flags & BlitFlags::HORIZONTAL_FLIP) == BlitFlags::HORIZONTAL_FLIP)
-                std::swap(sx, tx);
-        if ((flags & BlitFlags::VERTICAL_FLIP) == BlitFlags::VERTICAL_FLIP)
-                std::swap(sy, ty);
 
         glBindTexture(GL_TEXTURE_2D, texture.id);
 
