@@ -88,8 +88,8 @@ void Enemy::update(std::chrono::milliseconds delta)
 
 void Enemy::draw(Graphics &graphics)
 {
-	Graphics::BlitOptions options;
-	options.rotation = angle_;
+        Graphics::BlitOptions options;
+        options.rotation = angle_;
         graphics.blit(image_, 0, 0, position_.x, position_.y, options);
 }
 

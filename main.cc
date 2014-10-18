@@ -84,7 +84,7 @@ int main()
         }
 
         Graphics graphics(win.get());
-	Music::initialize();
+        Music::initialize();
         Background::loadContent(graphics);
         Bomb::loadContent(graphics);
         Boss::loadContent(graphics);

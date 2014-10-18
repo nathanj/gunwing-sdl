@@ -6,7 +6,8 @@
 
 #include <SDL_mixer.h>
 
-namespace Music {
+namespace Music
+{
 
 typedef std::shared_ptr<Mix_Chunk> Sound;
 
@@ -19,5 +20,4 @@ void playSound(const std::shared_ptr<Mix_Chunk>& chunk);
 
 void setMusicVolume(int volume);
 void setSoundVolume(int volume);
-
 }

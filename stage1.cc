@@ -16,7 +16,7 @@ Stage1::Stage1()
 {
         background_ = std::make_shared<Background>(Background::background2_);
 
-	Music::playMusic("stage1.mp3");
+        Music::playMusic("stage1.mp3");
 
         MAKE_ENEMY(2100, 480, 0, -1, 1);
         MAKE_ENEMY(2200, 510, 40, -1, 1);

@@ -21,8 +21,8 @@ GameState::State GameState::state_{GameState::State::TITLE_SCREEN};
 void GameState::initialize()
 {
         title_screen = std::make_shared<TitleScreen>();
-	ship = std::make_shared<Ship>();
-	hud = std::make_shared<Hud>();
+        ship = std::make_shared<Ship>();
+        hud = std::make_shared<Hud>();
 }
 
 void GameState::handleInput(const Input &input)

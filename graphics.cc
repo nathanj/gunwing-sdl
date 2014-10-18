@@ -65,11 +65,11 @@ Texture Graphics::loadImage(const std::string &file)
 }
 
 void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
-		    const BlitOptions& options)
+                    const BlitOptions &options)
 {
-	blit(texture, src_x, src_y, x, y, options.sprite_w, options.sprite_h,
-	     BlitFlags::NONE, &options.color, options.scale_w, options.scale_h,
-	     options.rotation);
+        blit(texture, src_x, src_y, x, y, options.sprite_w, options.sprite_h,
+             BlitFlags::NONE, &options.color, options.scale_w, options.scale_h,
+             options.rotation);
 }
 
 void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
