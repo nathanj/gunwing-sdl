@@ -6,6 +6,7 @@
 #include "bullet.h"
 #include "medal-plus.h"
 #include "bomb.h"
+#include "music.h"
 
 class Ship : public Sprite
 {
@@ -13,6 +14,7 @@ class Ship : public Sprite
         static Texture image_shield_;
         static Texture image_;
         static Texture image2_;
+        static Music::Sound laser_, collect_medal_;
 
         Ship(float x = 220, float y = 520, int type = 1);
 
@@ -69,6 +71,7 @@ class Ship : public Sprite
         Timer invinicibility_time_;
         Timer respawn_time_;
         Timer bullet_cooldown_;
+        Timer laser_sound_cooldown_{std::chrono::milliseconds(1000)};
         std::shared_ptr<Bomb> bomb_;
 
         void fireBomb();

@@ -1,10 +1,11 @@
 #include "music.h"
 
-#include <SDL.h>
-#include <SDL_mixer.h>
-
+#include <chrono>
 #include <cassert>
 #include <iostream>
+
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 namespace Music
 {
@@ -62,7 +63,7 @@ bool initialize()
         return true;
 }
 
-bool playMusic(const std::string& filename)
+bool playMusic(const std::string& filename, std::chrono::milliseconds fade)
 {
         freeMusic();
         printf("playing music %s\n", filename.c_str());
@@ -71,9 +72,27 @@ bool playMusic(const std::string& filename)
                 printMixError("Mix_LoadMUS");
                 return false;
         }
-        int rc = Mix_PlayMusic(music_, 1);
-        if (rc == -1) {
-                printMixError("Mix_PlayMusic");
+        if (fade.count() == 0) {
+                int rc = Mix_PlayMusic(music_, 1);
+                if (rc == -1) {
+                        printMixError("Mix_PlayMusic");
+                        return false;
+                }
+        } else {
+                int rc = Mix_FadeInMusic(music_, -1, fade.count());
+                if (rc == -1) {
+                        printMixError("Mix_FadeInMusic");
+                        return false;
+                }
+        }
+        return true;
+}
+
+bool stopMusic(std::chrono::milliseconds fade)
+{
+        int rc = Mix_FadeOutMusic(fade.count());
+        if (rc == 0) {
+                printMixError("Mix_FadeOutMusic");
                 return false;
         }
         return true;

@@ -14,6 +14,8 @@
 Texture Ship::image_shield_;
 Texture Ship::image_;
 Texture Ship::image2_;
+Music::Sound Ship::laser_;
+Music::Sound Ship::collect_medal_;
 
 Ship::Ship(float x, float y, int type)
     : invinicibility_time_(std::chrono::milliseconds(0)),
@@ -23,7 +25,7 @@ Ship::Ship(float x, float y, int type)
         position_ = {x, y};
         direction_ = {0, 0};
         speed_ = 5.0;
-        lives_ = 2;
+        lives_ = 20;
         invinicibility_time_.stop();
         respawn_time_.stop();
         game_over_ = false;
@@ -38,6 +40,8 @@ void Ship::loadContent(Graphics &graphics)
         image_ = graphics.loadImage("ship.png");
         image2_ = graphics.loadImage("ship2.png");
         image_shield_ = graphics.loadImage("shield.png");
+        laser_ = Music::loadSound("Laser_Shoot2.wav");
+        collect_medal_ = Music::loadSound("Powerup.wav");
 }
 
 void Ship::handleInput(const Input &input)
@@ -79,6 +83,10 @@ void Ship::fireBullet()
         if (bullet_cooldown_.active())
                 return;
 
+        if (!laser_sound_cooldown_.active()) {
+                Music::playSound(laser_);
+                laser_sound_cooldown_.reset();
+        }
         bullet_cooldown_.reset();
 
         bullets_.emplace_back(position_.x + image_.w / 2 - 4, position_.y, 0,
@@ -120,6 +128,7 @@ void Ship::update(std::chrono::milliseconds delta)
 {
         bullet_cooldown_.update(delta);
         invinicibility_time_.update(delta);
+        laser_sound_cooldown_.update(delta);
         if (bomb_)
                 bomb_->update(delta);
 
@@ -176,6 +185,7 @@ void Ship::collectMedals()
 {
         for (Medal &m : GameState::medals) {
                 if (m.obtainable() && collides(m)) {
+                        Music::playSound(collect_medal_);
                         medal_count_++;
                         score(score() + medal_count_);
                         medal_plus_.activate(medal_count_);
