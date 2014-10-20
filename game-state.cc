@@ -29,7 +29,8 @@ void GameState::handleInput(const Input &input)
 {
         switch (state_) {
         case TITLE_SCREEN:
-                if (input.isKeyHeld(SDLK_SPACE) || input.getButton(0))
+                if (input.wasKeyPressed(SDLK_SPACE) ||
+                    input.wasButtonPressed(0))
                         nextStage();
                 return;
         case CHOOSE_PILOT:

@@ -57,9 +57,25 @@ Vector<float> Input::getAxis() const
         return {x / 32768.0f, y / 32768.0f};
 }
 
-bool Input::getButton(int index) const
+Input::JoystickButtonState Input::getButton(int index) const
 {
-        return button[index];
+        return joystick_buttons_.at(index);
+}
+
+bool Input::isButtonHeld(int index) const
+{
+        switch (joystick_buttons_.at(index)) {
+        case HELD:
+        case PRESSED:
+                return true;
+        default:
+                return false;
+        }
+}
+
+bool Input::wasButtonPressed(int index) const
+{
+        return joystick_buttons_.at(index) == PRESSED;
 }
 
 void Input::handleEvent(const SDL_Event &e)
@@ -88,6 +104,8 @@ void Input::openJoystick(unsigned int index)
                 printf("Number of Axes: %d\n", SDL_JoystickNumAxes(js));
                 printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(js));
                 printf("Number of Balls: %d\n", SDL_JoystickNumBalls(js));
+                joystick_buttons_.assign(SDL_JoystickNumButtons(js),
+                                         NOT_PRESSED);
         }
 }
 
@@ -98,6 +116,26 @@ void Input::handleJoystick(unsigned int index)
 
         x = SDL_JoystickGetAxis(joysticks_[index], 0);
         y = SDL_JoystickGetAxis(joysticks_[index], 1);
-        button[0] = SDL_JoystickGetButton(joysticks_[index], 0);
-        button[1] = SDL_JoystickGetButton(joysticks_[index], 1);
+
+        for (unsigned int i = 0; i < joystick_buttons_.size(); i++) {
+                switch (joystick_buttons_[i]) {
+                case NOT_PRESSED:
+                        if (SDL_JoystickGetButton(joysticks_[index], i))
+                                joystick_buttons_[i] = PRESSED;
+                        break;
+                case PRESSED:
+                case HELD:
+                        if (SDL_JoystickGetButton(joysticks_[index], i))
+                                joystick_buttons_[i] = HELD;
+                        else
+                                joystick_buttons_[i] = RELEASED;
+                        break;
+                case RELEASED:
+                        if (SDL_JoystickGetButton(joysticks_[index], i))
+                                joystick_buttons_[i] = PRESSED;
+                        else
+                                joystick_buttons_[i] = NOT_PRESSED;
+                        break;
+                }
+        }
 }

@@ -68,10 +68,10 @@ void Ship::handleInput(const Input &input)
                 direction_.normalize();
         }
 
-        if ((input.isKeyHeld(SDLK_SPACE) || input.getButton(0)))
+        if (input.isKeyHeld(SDLK_SPACE) || input.isButtonHeld(0))
                 fireBullet();
 
-        if (input.isKeyHeld(SDLK_b) || input.getButton(1))
+        if (input.isKeyHeld(SDLK_b) || input.isButtonHeld(1))
                 fireBomb();
 }
 
@@ -82,7 +82,7 @@ int Ship::bulletStrength()
 
 void Ship::fireBullet()
 {
-        if (bullet_cooldown_.active())
+        if (bomb_ || bullet_cooldown_.active())
                 return;
 
         if (!laser_sound_cooldown_.active()) {

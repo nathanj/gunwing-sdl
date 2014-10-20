@@ -8,6 +8,13 @@
 class Input
 {
   public:
+        enum JoystickButtonState {
+                NOT_PRESSED,
+                PRESSED,
+                RELEASED,
+                HELD
+        };
+
         void beginNewFrame();
         void handleEvent(const SDL_Event &e);
         void pressKey(SDL_Keycode key);
@@ -19,7 +26,9 @@ class Input
         bool wasMouseClicked(int button) const;
         Vector<int> getMouseClickPosition(int button) const;
         Vector<float> getAxis() const;
-        bool getButton(int index) const;
+        JoystickButtonState getButton(int index) const;
+        bool isButtonHeld(int index) const;
+        bool wasButtonPressed(int index) const;
         void openJoystick(unsigned int index);
         void handleJoystick(unsigned int index);
 
@@ -30,5 +39,5 @@ class Input
         std::map<int, Vector<int>> mouse;
         std::vector<SDL_Joystick *> joysticks_;
         float x{0}, y{0};
-        bool button[2]{false, false};
+        std::vector<JoystickButtonState> joystick_buttons_;
 };

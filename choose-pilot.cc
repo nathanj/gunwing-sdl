@@ -46,12 +46,13 @@ void ChoosePilot::draw(Graphics& graphics)
 
 void ChoosePilot::handleInput(const Input& input)
 {
-        if ((input.wasKeyPressed(SDLK_SPACE) || input.getButton(0)))
+        if (input.wasKeyPressed(SDLK_SPACE) || input.wasButtonPressed(0))
                 finished_ = true;
 
         Vector<float> axis = input.getAxis();
         if (input.wasKeyPressed(SDLK_LEFT) || input.wasKeyPressed(SDLK_RIGHT) ||
-            std::abs(axis.x) > 32600)
+            (selection_ == 1 && axis.x > 0.9) ||
+            (selection_ == 2 && axis.x < -0.9))
                 moveSelection();
 }
 
