@@ -14,7 +14,7 @@ class Ship : public Sprite
         static Texture image_shield_;
         static Texture image_;
         static Texture image2_;
-        static Music::Sound laser_, collect_medal_;
+        static Music::Sound laser_, collect_medal_, explosion_;
 
         Ship(float x = 220, float y = 520, int type = 1);
 
@@ -72,6 +72,7 @@ class Ship : public Sprite
         Timer respawn_time_;
         Timer bullet_cooldown_;
         Timer laser_sound_cooldown_{std::chrono::milliseconds(1000)};
+        Timer medal_collection_cooldown_{std::chrono::milliseconds(100)};
         std::shared_ptr<Bomb> bomb_;
 
         void fireBomb();

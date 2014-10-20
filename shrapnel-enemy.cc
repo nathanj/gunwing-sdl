@@ -3,6 +3,8 @@
 #include "game-state.h"
 #include "utils.h"
 #include "shrapnel-bomb.h"
+#include "music.h"
+#include "enemy.h"
 
 // static
 Texture ShrapnelEnemy::image_;
@@ -66,6 +68,7 @@ void ShrapnelEnemy::update(std::chrono::milliseconds delta)
         position_.y += direction_.y * speed_;
 
         if (health_ < 0) {
+                Music::playSound(Enemy::explosion_);
                 dead_ = true;
                 createMedals(position_);
         }

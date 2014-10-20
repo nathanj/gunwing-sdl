@@ -2,11 +2,13 @@
 
 #include "sprite.h"
 #include "timer.h"
+#include "music.h"
 
 class Enemy : public Sprite
 {
   public:
         static Texture image_;
+        static Music::Sound explosion_;
 
         static void loadContent(Graphics &graphics);
 

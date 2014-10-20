@@ -17,7 +17,8 @@ void Stage::update(std::chrono::milliseconds delta)
                 if (enemies_to_appear_.size() == 2)
                         Music::stopMusic(std::chrono::milliseconds(3000));
                 if (enemies_to_appear_.size() == 1)
-                        Music::playMusic("boss.mp3", std::chrono::milliseconds(1000));
+                        Music::playMusic("boss.mp3",
+                                         std::chrono::milliseconds(1000));
                 GameState::enemies.push_back(enemies_to_appear_.front().second);
                 enemies_to_appear_.pop_front();
         }

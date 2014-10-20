@@ -9,10 +9,12 @@ using namespace std;
 
 // static
 Texture Enemy::image_;
+Music::Sound Enemy::explosion_;
 
 void Enemy::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("enemy.png");
+        explosion_ = Music::loadSound("Explosion.wav");
 }
 
 Enemy::Enemy(float x, float y, float dx, float dy)
@@ -66,6 +68,7 @@ void Enemy::update(std::chrono::milliseconds delta)
                 dead_ = true;
 
         if (health_ <= 0) {
+                Music::playSound(explosion_);
                 dead_ = true;
                 createMedals(position_);
                 Vector<int> dimensions = {image_.w, image_.h};
