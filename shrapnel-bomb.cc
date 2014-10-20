@@ -28,7 +28,7 @@ ShrapnelBomb::ShrapnelBomb(float x, float y, float dx, float dy, int shrapnel)
 void ShrapnelBomb::update(std::chrono::milliseconds delta)
 {
         if (health_ < 0) {
-                Music::playSound(Enemy::explosion_);
+                Music::queueSound(Enemy::explosion_);
                 dead_ = true;
                 createMedals(position_);
         }
@@ -50,7 +50,7 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
             position_.y + image_.h > Graphics::SCREEN_HEIGHT ||
             position_.x < 0 ||
             position_.x + image_.w > Graphics::SCREEN_WIDTH || dead()) {
-                Music::playSound(Enemy::explosion_);
+                Music::queueSound(Enemy::explosion_);
                 dead_ = true;
                 for (int i = 0; i < shrapnel_count_; i++) {
                         float dx = cosf(i * 2 * M_PI / shrapnel_count_);

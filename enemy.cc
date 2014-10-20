@@ -68,7 +68,7 @@ void Enemy::update(std::chrono::milliseconds delta)
                 dead_ = true;
 
         if (health_ <= 0) {
-                Music::playSound(explosion_);
+                Music::queueSound(explosion_);
                 dead_ = true;
                 createMedals(position_);
                 Vector<int> dimensions = {image_.w, image_.h};

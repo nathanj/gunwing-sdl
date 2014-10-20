@@ -68,7 +68,7 @@ void ShrapnelEnemy::update(std::chrono::milliseconds delta)
         position_.y += direction_.y * speed_;
 
         if (health_ < 0) {
-                Music::playSound(Enemy::explosion_);
+                Music::queueSound(Enemy::explosion_);
                 dead_ = true;
                 createMedals(position_);
         }

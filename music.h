@@ -18,9 +18,12 @@ void cleanup();
 bool playMusic(const std::string& filename,
                std::chrono::milliseconds fade = std::chrono::milliseconds(0));
 bool stopMusic(std::chrono::milliseconds fade = std::chrono::milliseconds(0));
-std::shared_ptr<Mix_Chunk> loadSound(const std::string& filename);
-void playSound(const std::shared_ptr<Mix_Chunk>& chunk);
+Sound loadSound(const std::string& filename);
+void playSound(const Sound& chunk);
+void queueSound(const Sound& chunk);
 
 void setMusicVolume(int volume);
 void setSoundVolume(int volume);
+
+void update();
 }

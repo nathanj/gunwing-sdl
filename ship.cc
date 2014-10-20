@@ -86,7 +86,7 @@ void Ship::fireBullet()
                 return;
 
         if (!laser_sound_cooldown_.active()) {
-                Music::playSound(laser_);
+                Music::queueSound(laser_);
                 laser_sound_cooldown_.reset();
         }
         bullet_cooldown_.reset();
@@ -131,7 +131,6 @@ void Ship::update(std::chrono::milliseconds delta)
         bullet_cooldown_.update(delta);
         invinicibility_time_.update(delta);
         laser_sound_cooldown_.update(delta);
-        medal_collection_cooldown_.update(delta);
         if (bomb_)
                 bomb_->update(delta);
 
@@ -188,10 +187,7 @@ void Ship::collectMedals()
 {
         for (Medal &m : GameState::medals) {
                 if (m.obtainable() && collides(m)) {
-                        if (!medal_collection_cooldown_.active()) {
-                                Music::playSound(collect_medal_);
-                                medal_collection_cooldown_.reset();
-                        }
+                        Music::queueSound(collect_medal_);
                         medal_count_++;
                         score(score() + medal_count_);
                         medal_plus_.activate(medal_count_);
@@ -225,7 +221,7 @@ void Ship::draw(Graphics &graphics)
 
 void Ship::die()
 {
-        Music::playSound(explosion_);
+        Music::queueSound(explosion_);
         dead_ = true;
         lives_--;
         bullets_.clear();

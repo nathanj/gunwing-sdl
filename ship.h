@@ -72,7 +72,6 @@ class Ship : public Sprite
         Timer respawn_time_;
         Timer bullet_cooldown_;
         Timer laser_sound_cooldown_{std::chrono::milliseconds(1000)};
-        Timer medal_collection_cooldown_{std::chrono::milliseconds(100)};
         std::shared_ptr<Bomb> bomb_;
 
         void fireBomb();

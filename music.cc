@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cassert>
 #include <iostream>
+#include <vector>
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -14,6 +15,7 @@ static int sound_volume_ = SDL_MIX_MAXVOLUME / 5;
 static int music_volume_ = SDL_MIX_MAXVOLUME / 5;
 static Mix_Music* music_ = NULL;
 static std::map<std::string, Sound> chunks_;
+static std::vector<Sound> sound_queue_;
 
 void setMusicVolume(int volume)
 {
@@ -98,7 +100,7 @@ bool stopMusic(std::chrono::milliseconds fade)
         return true;
 }
 
-std::shared_ptr<Mix_Chunk> loadSound(const std::string& filename)
+Sound loadSound(const std::string& filename)
 {
         auto it = chunks_.find(filename);
         if (it != chunks_.end())
@@ -113,7 +115,22 @@ std::shared_ptr<Mix_Chunk> loadSound(const std::string& filename)
         return chunk;
 }
 
-void playSound(const std::shared_ptr<Mix_Chunk>& chunk)
+void update()
+{
+        for (auto& s : sound_queue_)
+                playSound(s);
+        sound_queue_.clear();
+}
+
+void queueSound(const Sound& chunk)
+{
+        for (auto& s : sound_queue_)
+                if (s.get() == chunk.get())
+                        return;
+        sound_queue_.push_back(chunk);
+}
+
+void playSound(const Sound& chunk)
 {
         Mix_VolumeChunk(chunk.get(), sound_volume_);
         Mix_PlayChannel(-1, chunk.get(), 0);

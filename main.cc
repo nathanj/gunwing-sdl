@@ -136,6 +136,7 @@ int main()
                 fps.update(delta);
                 GameState::handleInput(input);
                 GameState::update(delta);
+                Music::update();
                 GameState::draw(graphics);
         }
 
