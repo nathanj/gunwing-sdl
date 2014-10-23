@@ -4,6 +4,7 @@
 #include "game-state.h"
 #include "utils.h"
 #include "enemy-chunk.h"
+#include "ship.h"
 
 using namespace std;
 
@@ -55,6 +56,7 @@ void Enemy::update(std::chrono::milliseconds delta)
 
         for (auto &b : GameState::ship->bullets()) {
                 if (!b.dead() && collides(b)) {
+			Music::queueSound(Ship::laser_);
                         b.dead(true);
                         health_ -= b.strength();
                 }

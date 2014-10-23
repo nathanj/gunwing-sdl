@@ -86,7 +86,7 @@ void Ship::fireBullet()
                 return;
 
         if (!laser_sound_cooldown_.active()) {
-                Music::queueSound(laser_);
+                //Music::queueSound(laser_);
                 laser_sound_cooldown_.reset();
         }
         bullet_cooldown_.reset();

@@ -26,9 +26,9 @@ class Input
         bool wasMouseClicked(int button) const;
         Vector<int> getMouseClickPosition(int button) const;
         Vector<float> getAxis() const;
-        JoystickButtonState getButton(int index) const;
-        bool isButtonHeld(int index) const;
-        bool wasButtonPressed(int index) const;
+        JoystickButtonState getButton(unsigned int index) const;
+        bool isButtonHeld(unsigned int index) const;
+        bool wasButtonPressed(unsigned int index) const;
         void openJoystick(unsigned int index);
         void handleJoystick(unsigned int index);
 
