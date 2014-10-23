@@ -48,6 +48,13 @@ Texture Graphics::loadImage(const std::string &file)
                 abort();
         }
 
+        auto t = loadImage(surface.get());
+        texture_map[file] = t;
+        return t;
+}
+
+Texture Graphics::loadImage(SDL_Surface *surface)
+{
         GLuint id;
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
@@ -58,8 +65,6 @@ Texture Graphics::loadImage(const std::string &file)
                      surface->pixels);
 
         Texture t{id, surface->w, surface->h};
-
-        texture_map[file] = t;
 
         return t;
 }

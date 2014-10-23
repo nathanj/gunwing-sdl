@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "stage1.h"
 #include "stage2.h"
+#include "text.h"
 
 // static
 std::shared_ptr<Ship> GameState::ship;
@@ -112,6 +113,7 @@ void GameState::draw(Graphics &graphics)
                 e->draw(graphics);
         ship->draw(graphics);
         hud->draw(graphics);
+        Text::drawString(graphics, "HELLO", 100, 100);
         graphics.flip();
 }
 

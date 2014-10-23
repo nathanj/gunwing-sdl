@@ -39,6 +39,7 @@ class Graphics
 
         Graphics(SDL_Window *win);
         Texture loadImage(const std::string &file);
+        Texture loadImage(SDL_Surface *surface);
         void blit(const Texture &texture, int src_x, int src_y, int x, int y,
                   int sprite_w = -1, int sprite_h = -1,
                   BlitFlags flags = BlitFlags::NONE, const Color *color = NULL,

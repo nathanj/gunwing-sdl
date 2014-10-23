@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <GL/glew.h>
 
 #include "background.h"
@@ -37,6 +38,7 @@
 #include "high-score-list.h"
 #include "choose-pilot.h"
 #include "music.h"
+#include "text.h"
 
 static bool quit = false;
 
@@ -109,6 +111,7 @@ int main()
         ReflectiveBeam::loadContent(graphics);
         Boss2::loadContent(graphics);
         ChoosePilot::loadContent(graphics);
+        Text::loadContent(graphics);
 
         HighScoreList high_scores;
 
