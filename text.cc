@@ -1,9 +1,10 @@
 #include "text.h"
 #include <iostream>
+#include <cassert>
 
 TTF_Font *Text::font_;
 int Text::size_;
-Texture Text::alphabet_[100];
+Texture Text::alphabet_[200];
 
 static void printTTFError(const std::string &msg)
 {
@@ -24,7 +25,8 @@ void Text::loadContent(Graphics& graphics)
         }
         const std::string str =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "_0123456789";
+                "abcdefghijklmnopqrstuvwxyz"
+                " _-0123456789";
         auto color = SDL_Color{0, 0, 0, 255};
         char buf[2] = {0};
         for (auto& c : str) {
@@ -34,15 +36,20 @@ void Text::loadContent(Graphics& graphics)
                         printTTFError("TTF_RenderText_Blended");
                         return;
                 }
+		assert((int) c < 200);
                 alphabet_[(int) c] = graphics.loadImage(text_surface);
         }
 }
 
 void Text::drawString(Graphics& graphics, const std::string& str, int x, int y)
 {
-        for (auto& c : str) {
-                auto& t = alphabet_[(int) c];
-                graphics.blit(t, 0, 0, x, y);
-                x += t.w;
-        }
+        for (auto& c : str)
+		drawChar(graphics, c, x, y);
+}
+
+void Text::drawChar(Graphics& graphics, char c, int x, int y)
+{
+	auto& t = alphabet_[(int) c];
+	graphics.blit(t, 0, 0, x, y);
+	x += t.w;
 }

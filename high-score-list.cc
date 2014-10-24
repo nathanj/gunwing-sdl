@@ -15,15 +15,15 @@ HighScoreList::HighScoreList() : list_(5)
 void HighScoreList::clearHighScores()
 {
         for (auto& e : list_) {
-                e.first = 0;
-                e.second = "---";
+                e.score = 0;
+                e.initials = "---";
         }
 }
 
 int HighScoreList::findPosition(int score)
 {
         for (int i = 0; i < 5; i++)
-                if (score > list_[i].first)
+                if (score > list_[i].score)
                         return i;
 
         return -1;
@@ -32,13 +32,13 @@ int HighScoreList::findPosition(int score)
 void HighScoreList::insert(std::string initials, int score)
 {
         auto it = std::find_if(std::begin(list_), std::end(list_),
-                               [&](const std::pair<int, std::string> & value) {
-                return score > value.first;
+                               [&](const HighScoreEntry& value) {
+                return score > value.score;
         });
         if (it == list_.end())
                 return;
 
-        list_.insert(it, std::make_pair(score, initials));
+        list_.insert(it, HighScoreEntry{score, initials});
         list_.pop_back();
 }
 
@@ -48,7 +48,7 @@ void HighScoreList::saveHighScores()
         std::ofstream os{filename_, ios::out | ios::trunc | ios::binary};
 
         for (const auto& e : list_)
-                os << e.first << " " << e.second << std::endl;
+                os << e.score << " " << e.initials << std::endl;
 }
 
 void HighScoreList::loadHighScores()
@@ -62,5 +62,10 @@ void HighScoreList::loadHighScores()
         }
 
         for (auto& e : list_)
-                is >> e.first >> e.second;
+                is >> e.score >> e.initials;
+}
+
+HighScoreEntry HighScoreList::getPosition(int index)
+{
+	return list_[index];
 }

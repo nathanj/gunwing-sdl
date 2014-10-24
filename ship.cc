@@ -26,7 +26,7 @@ Ship::Ship(float x, float y, int type)
         position_ = {x, y};
         direction_ = {0, 0};
         speed_ = 5.0;
-        lives_ = 20;
+        lives_ = 2;
         invinicibility_time_.stop();
         respawn_time_.stop();
         game_over_ = false;
@@ -137,12 +137,10 @@ void Ship::update(std::chrono::milliseconds delta)
         if (dead_) {
                 respawn_time_.update(delta);
                 if (!respawn_time_.active()) {
-                        // todo
-                        respawn();
-                        // if (lives_ >= 0)
-                        //	respawn();
-                        // else
-                        //	game_over_ = true;
+			if (lives_ >= 0)
+				respawn();
+			else
+				game_over_ = true;
                 }
                 return;
         }

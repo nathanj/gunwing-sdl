@@ -48,17 +48,24 @@ void GameState::handleInput(const Input &input)
 
 void GameState::update(std::chrono::milliseconds delta)
 {
-        if (state_ == State::TITLE_SCREEN) {
+	switch (state_) {
+	case TITLE_SCREEN:
                 title_screen->update(delta);
                 return;
-        } else if (state_ == State::CHOOSE_PILOT) {
+	case CHOOSE_PILOT:
                 choose_pilot->update(delta);
                 if (choose_pilot->finished()) {
                         ship->type(choose_pilot->selection());
                         nextStage();
                 }
                 return;
-        }
+        case HIGH_SCORE:
+		if (high_score_handler->finished())
+			nextStage();
+                return;
+	default:
+		break;
+	}
 
         if (stage)
                 stage->update(delta);
@@ -83,6 +90,13 @@ void GameState::update(std::chrono::milliseconds delta)
 
         if (stage && stage->next_stage())
                 nextStage();
+
+	if (ship->game_over()) {
+		state_ = State::HIGH_SCORE;
+		stage.reset();
+		high_score_handler =
+			std::make_shared<HighScoreHandler>(ship->score(), false);
+	}
 }
 
 void GameState::draw(Graphics &graphics)
@@ -113,7 +127,7 @@ void GameState::draw(Graphics &graphics)
                 e->draw(graphics);
         ship->draw(graphics);
         hud->draw(graphics);
-        Text::drawString(graphics, "HELLO", 100, 100);
+        Text::drawString(graphics, "Hello There", 100, 100);
         graphics.flip();
 }
 
@@ -146,7 +160,12 @@ void GameState::nextStage()
         case STAGE_TWO:
                 state_ = State::HIGH_SCORE;
                 stage.reset();
-                high_score_handler = std::make_shared<HighScoreHandler>();
+                high_score_handler =
+			std::make_shared<HighScoreHandler>(ship->score(), true);
+                break;
+        case HIGH_SCORE:
+                state_ = State::GAME_OVER;
+		high_score_handler.reset();
                 break;
         default:
                 break;

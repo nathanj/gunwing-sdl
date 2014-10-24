@@ -1,15 +1,29 @@
 #pragma once
 
 #include "input.h"
+#include "graphics.h"
+#include "high-score-list.h"
 
 class HighScoreHandler
 {
-  public:
-        void handleInput(const Input &input);
-        char upChar(char c);
-        char downChar(char c);
+public:
+	HighScoreHandler(int score, bool won);
+	void handleInput(const Input &input);
+	void draw(Graphics& graphics);
+	char upChar(char c);
+	char downChar(char c);
+	bool finished() { return finished_; }
 
-  private:
-        char initials_[3]{'A', 'A', 'A'};
-        int initial_position_{0};
+private:
+	char initials_[3]{'A', 'A', 'A'};
+	int position_{0};
+	int score_{0};
+	bool won_{false};
+	bool finished_{false};
+	void drawHighScoreLine(Graphics& graphics,
+			       const std::string& label,
+			       const std::string& initials,
+			       int score, int x, int y);
+	void finalizeHighScore();
+	HighScoreList high_score_list_;
 };

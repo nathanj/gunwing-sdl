@@ -42,6 +42,10 @@ class Ship : public Sprite
         {
                 return lives_;
         }
+	bool game_over()
+	{
+		return game_over_;
+	}
         int bombs()
         {
                 return bombs_;
