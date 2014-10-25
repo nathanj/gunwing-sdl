@@ -86,7 +86,7 @@ void Ship::fireBullet()
                 return;
 
         if (!laser_sound_cooldown_.active()) {
-                //Music::queueSound(laser_);
+                // Music::queueSound(laser_);
                 laser_sound_cooldown_.reset();
         }
         bullet_cooldown_.reset();
@@ -137,10 +137,10 @@ void Ship::update(std::chrono::milliseconds delta)
         if (dead_) {
                 respawn_time_.update(delta);
                 if (!respawn_time_.active()) {
-			if (lives_ >= 0)
-				respawn();
-			else
-				game_over_ = true;
+                        if (lives_ >= 0)
+                                respawn();
+                        else
+                                game_over_ = true;
                 }
                 return;
         }

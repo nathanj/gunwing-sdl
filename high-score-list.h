@@ -4,9 +4,10 @@
 #include <utility>
 #include <string>
 
-struct HighScoreEntry {
-	int score;
-	std::string initials;
+struct HighScoreEntry
+{
+        int score;
+        std::string initials;
 };
 
 class HighScoreList
@@ -15,7 +16,7 @@ class HighScoreList
         HighScoreList();
         void clearHighScores();
         int findPosition(int score);
-	HighScoreEntry getPosition(int index);
+        HighScoreEntry getPosition(int index);
         void insert(std::string initials, int score);
         void update(int position, std::string initials, int score);
         void saveHighScores();

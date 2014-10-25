@@ -37,12 +37,12 @@ void ChoosePilot::update(std::chrono::milliseconds delta)
 void ChoosePilot::draw(Graphics& graphics)
 {
         graphics.blit(image_, 0, 0, 0, 0);
-	Graphics::BlitOptions options;
+        Graphics::BlitOptions options;
         for (int i = 0; i < 4; i++) {
-		options.color = {1, 1, 1, 0.25f * 4 - i};
+                options.color = {1, 1, 1, 0.25f * 4 - i};
                 graphics.blit(image_selection_, 0, 0, position_[i].x,
                               position_[i].y, options);
-	}
+        }
         ship_->draw(graphics);
 }
 

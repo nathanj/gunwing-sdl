@@ -56,7 +56,7 @@ void Enemy::update(std::chrono::milliseconds delta)
 
         for (auto &b : GameState::ship->bullets()) {
                 if (!b.dead() && collides(b)) {
-			Music::queueSound(Ship::laser_);
+                        Music::queueSound(Ship::laser_);
                         b.dead(true);
                         health_ -= b.strength();
                 }

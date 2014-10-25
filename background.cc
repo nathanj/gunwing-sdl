@@ -66,7 +66,7 @@ void Background::draw(Graphics &graphics)
         options.color.a *= 0.1f;
         graphics.blit(clouds_, position_[1].x, position_[1].y, 0, 0, options);
         graphics.blit(clouds_, position_[1].x, position_[1].y - clouds_.h, 0, 0,
-		      options);
+                      options);
 }
 
 void Background::fadeOut()

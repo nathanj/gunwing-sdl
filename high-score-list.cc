@@ -32,7 +32,7 @@ int HighScoreList::findPosition(int score)
 void HighScoreList::insert(std::string initials, int score)
 {
         auto it = std::find_if(std::begin(list_), std::end(list_),
-                               [&](const HighScoreEntry& value) {
+                               [&](const HighScoreEntry & value) {
                 return score > value.score;
         });
         if (it == list_.end())
@@ -73,5 +73,5 @@ void HighScoreList::loadHighScores()
 
 HighScoreEntry HighScoreList::getPosition(int index)
 {
-	return list_[index];
+        return list_[index];
 }

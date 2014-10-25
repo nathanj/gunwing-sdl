@@ -48,11 +48,11 @@ void GameState::handleInput(const Input &input)
 
 void GameState::update(std::chrono::milliseconds delta)
 {
-	switch (state_) {
-	case TITLE_SCREEN:
+        switch (state_) {
+        case TITLE_SCREEN:
                 title_screen->update(delta);
                 return;
-	case CHOOSE_PILOT:
+        case CHOOSE_PILOT:
                 choose_pilot->update(delta);
                 if (choose_pilot->finished()) {
                         ship->type(choose_pilot->selection());
@@ -60,12 +60,12 @@ void GameState::update(std::chrono::milliseconds delta)
                 }
                 return;
         case HIGH_SCORE:
-		if (high_score_handler->finished())
-			nextStage();
+                if (high_score_handler->finished())
+                        nextStage();
                 return;
-	default:
-		break;
-	}
+        default:
+                break;
+        }
 
         if (stage)
                 stage->update(delta);
@@ -91,12 +91,12 @@ void GameState::update(std::chrono::milliseconds delta)
         if (stage && stage->next_stage())
                 nextStage();
 
-	if (ship->game_over()) {
-		state_ = State::HIGH_SCORE;
-		//stage.reset();
-		high_score_handler =
-			std::make_shared<HighScoreHandler>(ship->score(), false);
-	}
+        if (ship->game_over()) {
+                state_ = State::HIGH_SCORE;
+                // stage.reset();
+                high_score_handler =
+                    std::make_shared<HighScoreHandler>(ship->score(), false);
+        }
 }
 
 void GameState::draw(Graphics &graphics)
@@ -111,7 +111,7 @@ void GameState::draw(Graphics &graphics)
                 choose_pilot->draw(graphics);
                 graphics.flip();
                 return;
-        } 
+        }
 
         if (stage)
                 stage->draw(graphics);
@@ -164,11 +164,11 @@ void GameState::nextStage()
         case STAGE_TWO:
                 state_ = State::HIGH_SCORE;
                 high_score_handler =
-			std::make_shared<HighScoreHandler>(ship->score(), true);
+                    std::make_shared<HighScoreHandler>(ship->score(), true);
                 break;
         case HIGH_SCORE:
                 state_ = State::TITLE_SCREEN;
-		high_score_handler.reset();
+                high_score_handler.reset();
                 exit(0);
                 break;
         default:

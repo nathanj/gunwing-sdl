@@ -59,15 +59,15 @@ Vector<float> Input::getAxis() const
 
 Input::JoystickButtonState Input::getButton(unsigned int index) const
 {
-	if (joystick_buttons_.size() <= index)
-		return NOT_PRESSED;
+        if (joystick_buttons_.size() <= index)
+                return NOT_PRESSED;
         return joystick_buttons_.at(index);
 }
 
 bool Input::isButtonHeld(unsigned int index) const
 {
-	if (joystick_buttons_.size() <= index)
-		return false;
+        if (joystick_buttons_.size() <= index)
+                return false;
         switch (joystick_buttons_.at(index)) {
         case HELD:
         case PRESSED:
@@ -79,8 +79,8 @@ bool Input::isButtonHeld(unsigned int index) const
 
 bool Input::wasButtonPressed(unsigned int index) const
 {
-	if (joystick_buttons_.size() <= index)
-		return false;
+        if (joystick_buttons_.size() <= index)
+                return false;
         return joystick_buttons_.at(index) == PRESSED;
 }
 

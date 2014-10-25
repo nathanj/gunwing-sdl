@@ -29,7 +29,7 @@ void ElectricBall::update(std::chrono::milliseconds delta)
 
 void ElectricBall::draw(Graphics &graphics)
 {
-	Graphics::BlitOptions options;
+        Graphics::BlitOptions options;
         options.color = {1, 1, 1, 0.7f};
         graphics.blit(image_, 0, 0, position_.x, position_.y, options);
 }
