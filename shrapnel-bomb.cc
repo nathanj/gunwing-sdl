@@ -39,6 +39,10 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
                         health_ -= b.strength();
                 }
         }
+        if (GameState::ship->bomb() && collides(*GameState::ship->bomb())) {
+                auto dps = GameState::ship->bomb()->damage_per_second();
+                health_ -= dps * delta.count() / 1000.f;
+        }
 
         if (!dead()) {
                 // todo - delta

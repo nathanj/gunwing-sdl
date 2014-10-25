@@ -42,6 +42,12 @@ void HighScoreList::insert(std::string initials, int score)
         list_.pop_back();
 }
 
+void HighScoreList::update(int position, std::string initials, int score)
+{
+        list_[position].initials = initials;
+        list_[position].score = score;
+}
+
 void HighScoreList::saveHighScores()
 {
         using std::ios;

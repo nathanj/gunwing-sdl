@@ -17,6 +17,7 @@ class HighScoreList
         int findPosition(int score);
 	HighScoreEntry getPosition(int index);
         void insert(std::string initials, int score);
+        void update(int position, std::string initials, int score);
         void saveHighScores();
         void loadHighScores();
 

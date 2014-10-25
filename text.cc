@@ -1,6 +1,7 @@
 #include "text.h"
 #include <iostream>
 #include <cassert>
+#include "utils.h"
 
 TTF_Font *Text::font_;
 int Text::size_;
@@ -27,7 +28,7 @@ void Text::loadContent(Graphics& graphics)
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 "abcdefghijklmnopqrstuvwxyz"
                 " _-0123456789";
-        auto color = SDL_Color{0, 0, 0, 255};
+        auto color = SDL_Color{255, 255, 255, 255};
         char buf[2] = {0};
         for (auto& c : str) {
                 buf[0] = c;
@@ -41,15 +42,23 @@ void Text::loadContent(Graphics& graphics)
         }
 }
 
-void Text::drawString(Graphics& graphics, const std::string& str, int x, int y)
+void Text::drawString(Graphics& graphics, const std::string& str, int x,
+                      int y, Color *color)
 {
         for (auto& c : str)
-		drawChar(graphics, c, x, y);
+		drawChar(graphics, c, x += alphabet_[(int) 'A'].w, y, color);
 }
 
-void Text::drawChar(Graphics& graphics, char c, int x, int y)
+void Text::drawChar(Graphics& graphics, char c, int x, int y, Color *color)
 {
 	auto& t = alphabet_[(int) c];
-	graphics.blit(t, 0, 0, x, y);
+        Graphics::BlitOptions options;
+        if (color)
+                options.color = *color;
+        //TRACE(options.color.r);
+        //TRACE(options.color.g);
+        //TRACE(options.color.b);
+        //TRACE(options.color.a);
+	graphics.blit(t, 0, 0, x, y, options);
 	x += t.w;
 }

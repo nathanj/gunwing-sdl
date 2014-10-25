@@ -7,8 +7,10 @@
 class Text {
 public:
         static void loadContent(Graphics& graphics);
-        static void drawString(Graphics& graphics, const std::string& str, int x, int y);
-        static void drawChar(Graphics& graphics, char c, int x, int y);
+        static void drawString(Graphics& graphics, const std::string& str,
+                               int x, int y, Color *color = NULL);
+        static void drawChar(Graphics& graphics, char c, int x, int y,
+                             Color *color = NULL);
 
 private:
         static int size_;
