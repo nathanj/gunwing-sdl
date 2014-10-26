@@ -11,7 +11,7 @@
 namespace Music
 {
 
-static int sound_volume_ = SDL_MIX_MAXVOLUME / 5;
+static int sound_volume_ = SDL_MIX_MAXVOLUME / 8;
 static int music_volume_ = SDL_MIX_MAXVOLUME / 5;
 static Mix_Music* music_ = NULL;
 static std::map<std::string, Sound> chunks_;

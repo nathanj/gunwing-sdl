@@ -26,7 +26,7 @@ void Text::loadContent(Graphics& graphics)
         }
         const std::string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 "abcdefghijklmnopqrstuvwxyz"
-                                " _-0123456789";
+                                "! _-0123456789";
         auto color = SDL_Color{255, 255, 255, 255};
         char buf[2] = {0};
         for (auto& c : str) {

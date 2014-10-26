@@ -41,6 +41,8 @@ void HighScoreHandler::draw(Graphics& graphics)
                                        100 + 60 * i, &c);
                 } else {
                         auto c = Color{0.0f, 0.0f, 0.0f, 1.0f};
+                        if (won_)
+                                c = Color{1.0f, 1.0f, 1.0f, 1.0f};
                         auto e = high_score_list_.getPosition(i);
                         drawHighScoreLine(graphics, labels[i], e.initials,
                                           e.score, 10, 100 + 60 * i, &c);

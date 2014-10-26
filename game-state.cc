@@ -169,7 +169,7 @@ void GameState::nextStage()
         case HIGH_SCORE:
                 state_ = State::TITLE_SCREEN;
                 high_score_handler.reset();
-                exit(0);
+                initialize();
                 break;
         default:
                 break;

@@ -20,7 +20,7 @@ class Boss2 : public Sprite
         Timer time_to_next_bullet_{std::chrono::milliseconds(700)};
         Timer time_to_next_large_bullet_{std::chrono::milliseconds(350)};
         Timer invulnerable_{std::chrono::milliseconds(500)};
-        const int max_health_{120000};
+        const int max_health_{1200};
         std::vector<int> healthbar_markers_{{90000, 40000, 0}};
         HealthBar healthbar_;
         float angle_{0};

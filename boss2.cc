@@ -42,6 +42,7 @@ void Boss2::update(std::chrono::milliseconds delta)
         if (state_ != States::DOWN && !invulnerable_.active()) {
                 for (auto &b : GameState::ship->bullets()) {
                         if (!b.dead() && collides(b)) {
+                                Music::queueSound(Ship::laser_);
                                 b.dead(true);
                                 health_ -= b.strength();
                         }

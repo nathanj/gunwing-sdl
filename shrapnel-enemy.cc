@@ -51,6 +51,7 @@ void ShrapnelEnemy::update(std::chrono::milliseconds delta)
 
         for (auto &b : GameState::ship->bullets()) {
                 if (!b.dead() && collides(b)) {
+                        Music::playSound(Ship::laser_);
                         b.dead(true);
                         health_ -= b.strength();
                 }
