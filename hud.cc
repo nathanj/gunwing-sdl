@@ -50,7 +50,6 @@ void Hud::drawMedals(Graphics &graphics)
 
 void Hud::drawBombs(Graphics &graphics)
 {
-        // todo - alpha?
         auto color = Color{1, 1, 1, bomb_current_alpha_};
         auto pos = Vector<float>{0.f, Graphics::SCREEN_HEIGHT - 48.f};
         for (int i = 0; i < GameState::ship->bombs(); i++) {
