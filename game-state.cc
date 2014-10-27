@@ -24,6 +24,11 @@ void GameState::initialize()
         title_screen = std::make_shared<TitleScreen>();
         ship = std::make_shared<Ship>();
         hud = std::make_shared<Hud>();
+        enemies.clear();
+        enemy_bullets.clear();
+        background_enemy_bullets.clear();
+        medals.clear();
+        chunks.clear();
 }
 
 void GameState::handleInput(const Input &input)
