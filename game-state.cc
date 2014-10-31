@@ -151,6 +151,11 @@ void GameState::convertBulletsToMedals()
         enemy_bullets.clear();
 }
 
+void GameState::clearMedals()
+{
+        medals.clear();
+}
+
 void GameState::nextStage()
 {
         switch (state_) {

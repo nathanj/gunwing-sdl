@@ -82,7 +82,7 @@ int Ship::bulletStrength()
 
 void Ship::fireBullet()
 {
-        if (bomb_ || bullet_cooldown_.active())
+        if (dead_ || bomb_ || bullet_cooldown_.active())
                 return;
 
         if (!laser_sound_cooldown_.active()) {
@@ -226,6 +226,7 @@ void Ship::die()
         respawn_time_.reset(std::chrono::milliseconds(2500));
         auto dimensions = Vector<int>{image_.w, image_.h};
         createChunks(position_, dimensions, 50);
+        GameState::clearMedals();
 }
 
 void Ship::respawn()

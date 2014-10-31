@@ -37,6 +37,7 @@ class GameState
         static void update(std::chrono::milliseconds delta);
         static void draw(Graphics &graphics);
         static void convertBulletsToMedals();
+        static void clearMedals();
         static void nextStage();
 
         static enum State {
