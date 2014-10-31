@@ -32,6 +32,14 @@ class Sprite
         {
                 dead_ = value;
         }
+        int health() const
+        {
+                return health_;
+        }
+        void health(int delta)
+        {
+                health_ += delta;
+        }
 
   protected:
         bool dead_{false};

@@ -49,17 +49,8 @@ void ShrapnelEnemy::update(std::chrono::milliseconds delta)
                 }
         }
 
-        for (auto &b : GameState::ship->bullets()) {
-                if (!b.dead() && collides(b)) {
-                        Music::playSound(Ship::laser_);
-                        b.dead(true);
-                        health_ -= b.strength();
-                }
-        }
-        if (GameState::ship->bomb() && collides(*GameState::ship->bomb())) {
-                auto dps = GameState::ship->bomb()->damage_per_second();
-                health_ -= dps * delta.count() / 1000.f;
-        }
+        handleCollisionWithShipWeapons(this, GameState::ship.get(),
+                                       delta.count() / 1000.0f);
 
         if (position_.y < -200)
                 dead_ = true;

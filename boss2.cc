@@ -39,20 +39,9 @@ void Boss2::update(std::chrono::milliseconds delta)
         invulnerable_.update(delta);
         healthbar_.update(delta);
 
-        if (state_ != States::DOWN && !invulnerable_.active()) {
-                for (auto &b : GameState::ship->bullets()) {
-                        if (!b.dead() && collides(b)) {
-                                Music::queueSound(Ship::laser_);
-                                b.dead(true);
-                                health_ -= b.strength();
-                        }
-                }
-                if (GameState::ship->bomb() &&
-                    collides(*GameState::ship->bomb())) {
-                        auto dps = GameState::ship->bomb()->damage_per_second();
-                        health_ -= dps * delta.count() / 1000.f;
-                }
-        }
+        if (state_ != States::DOWN && !invulnerable_.active())
+                handleCollisionWithShipWeapons(this, GameState::ship.get(),
+                                               delta.count() / 1000.0f);
 
         if (health_ < 0) {
                 dead_ = true;
@@ -177,7 +166,7 @@ void Boss2::fireLargeBullet()
 
 void Boss2::nextForm()
 {
-        form_++;
+        form_ = static_cast<Forms>(static_cast<int>(form_) + 1);
         invulnerable_.reset();
         GameState::convertBulletsToMedals();
         Vector<int> dimensions = {image_.w, image_.h};

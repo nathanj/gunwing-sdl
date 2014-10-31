@@ -236,3 +236,19 @@ void Ship::respawn()
         bombs_ = 3;
         // medal_count_ = 1;
 }
+
+void handleCollisionWithShipWeapons(Sprite* sprite, Ship* ship, float dt)
+{
+        for (auto &b : ship->bullets()) {
+                if (!b.dead() && sprite->collides(b)) {
+                        Music::queueSound(Ship::laser_);
+                        b.dead(true);
+                        sprite->health(-b.strength());
+                }
+        }
+        if (GameState::ship->bomb() &&
+            sprite->collides(*GameState::ship->bomb())) {
+                auto dps = GameState::ship->bomb()->damage_per_second();
+                sprite->health(-dps * dt);
+        }
+}
