@@ -6,6 +6,7 @@
 // static
 Texture Bullet::image_;
 Texture Bullet::image2_;
+Texture Bullet::image3_;
 
 Bullet::Bullet(float x, float y, float dx, float dy, float speed, int strength,
                int type)
@@ -23,6 +24,7 @@ void Bullet::loadContent(Graphics &graphics)
 {
         image_ = graphics.loadImage("ebullet.png");
         image2_ = graphics.loadImage("bullet.png");
+        image3_ = graphics.loadImage("shrapnel.png");
 }
 
 void Bullet::update(std::chrono::milliseconds delta)
@@ -42,6 +44,8 @@ void Bullet::draw(Graphics &graphics)
 {
         if (type_ == 1)
                 graphics.blit(image_, 0, 0, position_.x, position_.y);
+        else if (type_ == 3)
+                graphics.blit(image3_, 0, 0, position_.x, position_.y);
         else
                 graphics.blit(image2_, 0, 0, position_.x, position_.y);
 }

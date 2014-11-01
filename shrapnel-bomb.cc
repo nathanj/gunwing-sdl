@@ -1,7 +1,6 @@
 #include "shrapnel-bomb.h"
 
 #include "game-state.h"
-#include "shrapnel.h"
 #include "utils.h"
 #include "music.h"
 #include "enemy.h"
@@ -51,9 +50,9 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
                         float dx = cosf(i * 2 * M_PI / shrapnel_count_);
                         float dy = sinf(i * 2 * M_PI / shrapnel_count_);
                         GameState::enemy_bullets.push_back(
-                            std::make_shared<Shrapnel>(
+                            std::make_shared<Bullet>(
                                 position_.x + image_.w / 2,
-                                position_.y + image_.h / 2, dx, dy));
+                                position_.y + image_.h / 2, dx, dy, 2, 0, 3));
                 }
         }
 }

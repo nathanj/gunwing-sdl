@@ -28,7 +28,6 @@
 #include "ship.h"
 #include "shrapnel-bomb.h"
 #include "shrapnel-enemy.h"
-#include "shrapnel.h"
 #include "stage1.h"
 #include "stage2.h"
 #include "stage-cleared.h"
@@ -101,7 +100,6 @@ int main()
         Hud::loadContent(graphics);
         Medal::loadContent(graphics);
         Ship::loadContent(graphics);
-        Shrapnel::loadContent(graphics);
         ShrapnelBomb::loadContent(graphics);
         ShrapnelEnemy::loadContent(graphics);
         Warning::loadContent(graphics);

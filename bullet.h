@@ -8,6 +8,7 @@ class Bullet : public Sprite
   public:
         static Texture image_;
         static Texture image2_;
+        static Texture image3_;
 
         static void loadContent(Graphics &graphics);
 
