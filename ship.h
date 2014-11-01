@@ -88,4 +88,4 @@ class Ship : public Sprite
         int bulletStrength();
 };
 
-void handleCollisionWithShipWeapons(Sprite* sprite, Ship* ship, float dt);
+void handleCollisionWithShipWeapons(Sprite *sprite, Ship *ship, float dt);

@@ -239,7 +239,7 @@ void Ship::respawn()
         // medal_count_ = 1;
 }
 
-void handleCollisionWithShipWeapons(Sprite* sprite, Ship* ship, float dt)
+void handleCollisionWithShipWeapons(Sprite *sprite, Ship *ship, float dt)
 {
         for (auto &b : ship->bullets()) {
                 if (!b.dead() && sprite->collides(b)) {

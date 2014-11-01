@@ -57,7 +57,6 @@ void GameState::update(std::chrono::milliseconds delta)
         static std::chrono::milliseconds leftover(0);
         std::chrono::milliseconds timestep(16);
         delta += leftover;
-        //TRACE(delta.count());
         while (delta > timestep) {
                 delta -= timestep;
                 switch (state_) {
@@ -88,7 +87,8 @@ void GameState::update(std::chrono::milliseconds delta)
                                 e.update(timestep);
                         for (unsigned int i = 0; i < enemy_bullets.size(); ++i)
                                 enemy_bullets[i]->update(timestep);
-                        for (unsigned int i = 0; i < background_enemy_bullets.size(); ++i)
+                        for (unsigned int i = 0;
+                             i < background_enemy_bullets.size(); ++i)
                                 background_enemy_bullets[i]->update(timestep);
 
                         remove_dead(enemy_bullets);
@@ -104,7 +104,8 @@ void GameState::update(std::chrono::milliseconds delta)
                                 state_ = State::HIGH_SCORE;
                                 // stage.reset();
                                 high_score_handler =
-                                        std::make_shared<HighScoreHandler>(ship->score(), false);
+                                    std::make_shared<HighScoreHandler>(
+                                        ship->score(), false);
                         }
                         break;
                 }
