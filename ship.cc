@@ -25,7 +25,7 @@ Ship::Ship(float x, float y, int type)
 {
         position_ = {x, y};
         direction_ = {0, 0};
-        speed_ = 5.0;
+        speed_ = 300.0;
         lives_ = 2;
         invinicibility_time_.stop();
         respawn_time_.stop();
@@ -68,11 +68,8 @@ void Ship::handleInput(const Input &input)
                 direction_.normalize();
         }
 
-        if (input.isKeyHeld(SDLK_SPACE) || input.isButtonHeld(0))
-                fireBullet();
-
-        if (input.isKeyHeld(SDLK_b) || input.isButtonHeld(1))
-                fireBomb();
+        firing_bullet_ = (input.isKeyHeld(SDLK_SPACE) || input.isButtonHeld(0));
+        firing_bomb_ = (input.isKeyHeld(SDLK_b) || input.isButtonHeld(1));
 }
 
 int Ship::bulletStrength()
@@ -134,6 +131,11 @@ void Ship::update(std::chrono::milliseconds delta)
         if (bomb_)
                 bomb_->update(delta);
 
+        if (firing_bullet_)
+                fireBullet();
+        if (firing_bomb_)
+                fireBomb();
+
         if (dead_) {
                 respawn_time_.update(delta);
                 if (!respawn_time_.active()) {
@@ -152,9 +154,8 @@ void Ship::update(std::chrono::milliseconds delta)
         for (const auto &b : GameState::enemies)
                 handleCollisions(*b);
 
-        // todo - use delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 
         position_.x =
             clamp(position_.x, 0.0f, 1.0f * Graphics::SCREEN_WIDTH - image_.w);

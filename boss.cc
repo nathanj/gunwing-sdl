@@ -15,7 +15,7 @@ Boss::Boss(float x, float y)
 {
         position_ = {x, y};
         direction_ = {0, 1};
-        speed_ = 3;
+        speed_ = 180;
         health_ = max_health_;
         dead_ = false;
         angle_ = 0;
@@ -67,13 +67,13 @@ void Boss::update(std::chrono::milliseconds delta)
                 default:
                         assert(0);
                 }
-                fireBullet();
+                fireBullet(delta);
         }
 
         if (state_ == States::DOWN && position_.y > 20) {
                 state_ = States::LEFT;
                 direction_ = {-1, 0};
-                speed_ = 1;
+                speed_ = 60;
                 invulnerable_.stop();
         } else if (state_ == States::LEFT && position_.x < -10) {
                 state_ = States::RIGHT;
@@ -87,9 +87,8 @@ void Boss::update(std::chrono::milliseconds delta)
                 nextForm();
         }
 
-        // todo -delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 }
 
 void Boss::draw(Graphics &graphics)
@@ -98,18 +97,18 @@ void Boss::draw(Graphics &graphics)
         healthbar_.draw(graphics);
 }
 
-void Boss::fireBullet()
+void Boss::fireBullet(std::chrono::milliseconds delta)
 {
         if (GameState::ship->dead())
                 return;
 
         if (form_ == Forms::ONE)
-                fireShrapnel();
+                fireShrapnel(delta);
         else
-                fireCircularBullets();
+                fireCircularBullets(delta);
 }
 
-void Boss::fireShrapnel()
+void Boss::fireShrapnel(std::chrono::milliseconds)
 {
         Vector<float> pos = {position_.x + 60, position_.y + 200};
         if (!fire_left_)
@@ -122,9 +121,9 @@ void Boss::fireShrapnel()
         shrapnel_rounds_ += 4;
 }
 
-void Boss::fireCircularBullets()
+void Boss::fireCircularBullets(std::chrono::milliseconds delta)
 {
-        angle_ += 0.03f;  // todo - delta
+        angle_ += 0.03f * 60 * delta.count() / 1000.0f;
 
         for (int i = 0; i < 4; i++) {
                 GameState::enemy_bullets.push_back(std::make_shared<Bullet>(

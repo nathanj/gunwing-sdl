@@ -19,7 +19,7 @@ EnemyChunk::EnemyChunk(float x, float y)
                       rand_between(-64, 64) / 64.0f};
         direction_.normalize();
 
-        speed_ = 2 + gaussrand() * 1.0f;
+        speed_ = 60 * (2 + gaussrand() * 1.0f);
         type_ = rand_between(0, 3);
         max_alpha_ = 30;
         lifetime_.reset(std::chrono::milliseconds(1000));
@@ -34,9 +34,8 @@ void EnemyChunk::update(std::chrono::milliseconds delta)
         if (!lifetime_.active())
                 dead_ = true;
 
-        // todo - delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 }
 
 void EnemyChunk::draw(Graphics &graphics)

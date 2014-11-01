@@ -65,6 +65,8 @@ class Ship : public Sprite
 
   private:
         bool game_over_;
+        bool firing_bullet_{false};
+        bool firing_bomb_{false};
         int bombs_;
         int lives_;
         int medal_count_{0};

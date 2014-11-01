@@ -16,6 +16,6 @@ class Warning : public Sprite
 
   private:
         float alpha_{1};
-        float d_alpha_{-0.01f};
+        float d_alpha_{-0.60f};
         Timer lifetime_{std::chrono::milliseconds(5000)};
 };

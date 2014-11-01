@@ -11,8 +11,7 @@ void Warning::update(std::chrono::milliseconds delta)
 {
         lifetime_.update(delta);
 
-        // todo - delta
-        alpha_ += d_alpha_;
+        alpha_ += d_alpha_ * delta.count() / 1000.0f;
         if (alpha_ <= 0) {
                 if (!lifetime_.update(delta))
                         dead_ = true;

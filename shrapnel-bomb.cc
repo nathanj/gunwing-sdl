@@ -19,7 +19,7 @@ ShrapnelBomb::ShrapnelBomb(float x, float y, float dx, float dy, int shrapnel)
         direction_ = {dx, dy};
         direction_.normalize();
 
-        speed_ = 3;
+        speed_ = 180;
         shrapnel_count_ = shrapnel;
         health_ = 50;
         geometry_.push_back({5, 5, 25, 25});
@@ -37,9 +37,8 @@ void ShrapnelBomb::update(std::chrono::milliseconds delta)
                                        delta.count() / 1000.0f);
 
         if (!dead()) {
-                // todo - delta
-                position_.x += direction_.x * speed_;
-                position_.y += direction_.y * speed_;
+                position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+                position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
         }
 
         if (position_.y < 0 ||

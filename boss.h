@@ -39,9 +39,9 @@ class Boss : public Sprite
         bool fire_left_;
         float angle_{0};
 
-        void fireBullet();
-        void fireShrapnel();
-        void fireCircularBullets();
+        void fireBullet(std::chrono::milliseconds delta);
+        void fireShrapnel(std::chrono::milliseconds delta);
+        void fireCircularBullets(std::chrono::milliseconds delta);
         void nextForm();
         void die();
 };

@@ -24,7 +24,7 @@ Enemy::Enemy(float x, float y, float dx, float dy)
         direction_ = {dx, dy};
         direction_.normalize();
 
-        speed_ = 2;
+        speed_ = 120;
         health_ = 300;
         dead_ = false;
         time_to_next_state_.reset(std::chrono::milliseconds(1500));
@@ -50,7 +50,7 @@ void Enemy::update(std::chrono::milliseconds delta)
                 } else if (state_ == States::SHOOTING) {
                         state_ = States::UP;
                         direction_ = {0, -1};
-                        speed_ = 4;
+                        speed_ = 240;
                 }
         }
 
@@ -73,9 +73,8 @@ void Enemy::update(std::chrono::milliseconds delta)
                 fireBullet();
         }
 
-        // todo - use delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 
         auto vx = GameState::ship->position().x - position_.x;
         auto vy = GameState::ship->position().y - position_.y;

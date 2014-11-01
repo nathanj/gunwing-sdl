@@ -12,7 +12,7 @@ Medal::Medal(float x, float y)
         direction_ = {rand_between(-100, 100) / 100.0f,
                       rand_between(-100, 100) / 100.0f};
         direction_.normalize();
-        speed_ = rand() % 3 + 1;
+        speed_ = 60 * (rand() % 3 + 1);
 
         geometry_.push_back(
             {0, 0, static_cast<float>(image_.w), static_cast<float>(image_.h)});
@@ -54,12 +54,11 @@ void Medal::update(std::chrono::milliseconds delta)
                 direction_.x = (len * direction_.x + (4 - len) * newdir.x) / 4;
                 direction_.y = (len * direction_.y + (4 - len) * newdir.y) / 4;
 
-                speed_ += 0.2f;
+                speed_ += 60 * 0.2f;
         }
 
-        // todo - delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 }
 
 void Medal::draw(Graphics &graphics)

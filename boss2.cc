@@ -22,7 +22,7 @@ Boss2::Boss2(float x, float y)
 {
         position_ = {x, y};
         direction_ = {0, 1};
-        speed_ = 3;
+        speed_ = 180;
         health_ = max_health_;
 
         geometry_.push_back({34, 15, 310, 184});
@@ -73,16 +73,15 @@ void Boss2::update(std::chrono::milliseconds delta)
         if (state_ == States::DOWN && position_.y > 20) {
                 state_ = States::NORMAL;
                 direction_ = {0, 0};
-                speed_ = 1;
+                speed_ = 60;
                 invulnerable_.stop();
         }
 
         if (health_ < healthbar_markers_[(int)form_])
                 nextForm();
 
-        // todo - delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 }
 
 void Boss2::draw(Graphics &graphics)

@@ -23,12 +23,12 @@ void Background::loadContent(Graphics &graphics)
         background3_ = graphics.loadImage("bg3.png");
 }
 
-void Background::update(std::chrono::milliseconds)
+void Background::update(std::chrono::milliseconds delta)
 {
         position_[0].x = GameState::ship->position().x / 5;
         position_[0].x = std::max(-120.0f, position_[0].x);
 
-        position_[0].y -= 3;  // todo delta
+        position_[0].y -= 180 * delta.count() / 1000.0f;
         if (position_[0].y < 0)
                 position_[0].y += background_.h;
 

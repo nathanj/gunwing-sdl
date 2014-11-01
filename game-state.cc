@@ -4,6 +4,7 @@
 #include "stage1.h"
 #include "stage2.h"
 #include "text.h"
+#include "utils.h"
 
 // static
 std::shared_ptr<Ship> GameState::ship;
@@ -53,55 +54,62 @@ void GameState::handleInput(const Input &input)
 
 void GameState::update(std::chrono::milliseconds delta)
 {
-        switch (state_) {
-        case TITLE_SCREEN:
-                title_screen->update(delta);
-                return;
-        case CHOOSE_PILOT:
-                choose_pilot->update(delta);
-                if (choose_pilot->finished()) {
-                        ship->type(choose_pilot->selection());
-                        nextStage();
+        static std::chrono::milliseconds leftover(0);
+        std::chrono::milliseconds timestep(16);
+        delta += leftover;
+        //TRACE(delta.count());
+        while (delta > timestep) {
+                delta -= timestep;
+                switch (state_) {
+                case TITLE_SCREEN:
+                        title_screen->update(timestep);
+                        break;
+                case CHOOSE_PILOT:
+                        choose_pilot->update(timestep);
+                        if (choose_pilot->finished()) {
+                                ship->type(choose_pilot->selection());
+                                nextStage();
+                        }
+                        break;
+                case HIGH_SCORE:
+                        if (high_score_handler->finished())
+                                nextStage();
+                        break;
+                default:
+                        if (stage)
+                                stage->update(timestep);
+                        ship->update(timestep);
+                        hud->update(timestep);
+                        for (auto &e : enemies)
+                                e->update(timestep);
+                        for (auto &e : medals)
+                                e.update(timestep);
+                        for (auto &e : chunks)
+                                e.update(timestep);
+                        for (unsigned int i = 0; i < enemy_bullets.size(); ++i)
+                                enemy_bullets[i]->update(timestep);
+                        for (unsigned int i = 0; i < background_enemy_bullets.size(); ++i)
+                                background_enemy_bullets[i]->update(timestep);
+
+                        remove_dead(enemy_bullets);
+                        remove_dead(background_enemy_bullets);
+                        remove_dead(enemies);
+                        remove_dead(medals);
+                        remove_dead(chunks);
+
+                        if (stage && stage->next_stage())
+                                nextStage();
+
+                        if (ship->game_over()) {
+                                state_ = State::HIGH_SCORE;
+                                // stage.reset();
+                                high_score_handler =
+                                        std::make_shared<HighScoreHandler>(ship->score(), false);
+                        }
+                        break;
                 }
-                return;
-        case HIGH_SCORE:
-                if (high_score_handler->finished())
-                        nextStage();
-                return;
-        default:
-                break;
         }
-
-        if (stage)
-                stage->update(delta);
-        ship->update(delta);
-        hud->update(delta);
-        for (auto &e : enemies)
-                e->update(delta);
-        for (auto &e : medals)
-                e.update(delta);
-        for (auto &e : chunks)
-                e.update(delta);
-        for (unsigned int i = 0; i < enemy_bullets.size(); ++i)
-                enemy_bullets[i]->update(delta);
-        for (unsigned int i = 0; i < background_enemy_bullets.size(); ++i)
-                background_enemy_bullets[i]->update(delta);
-
-        remove_dead(enemy_bullets);
-        remove_dead(background_enemy_bullets);
-        remove_dead(enemies);
-        remove_dead(medals);
-        remove_dead(chunks);
-
-        if (stage && stage->next_stage())
-                nextStage();
-
-        if (ship->game_over()) {
-                state_ = State::HIGH_SCORE;
-                // stage.reset();
-                high_score_handler =
-                    std::make_shared<HighScoreHandler>(ship->score(), false);
-        }
+        leftover = delta;
 }
 
 void GameState::draw(Graphics &graphics)

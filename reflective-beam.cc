@@ -12,7 +12,7 @@ ReflectiveBeam::ReflectiveBeam(float x, float y, float dx, float dy,
         position_ = {x, y};
         direction_ = {dx, dy};
         direction_.normalize();
-        speed_ = 3.f;
+        speed_ = 180.f;
         left_wall_ = left_wall;
         right_wall_ = right_wall;
         geometry_.push_back({0, 0, (float)image_.w, (float)image_.h});
@@ -20,9 +20,8 @@ ReflectiveBeam::ReflectiveBeam(float x, float y, float dx, float dy,
 
 void ReflectiveBeam::update(std::chrono::milliseconds delta)
 {
-        // todo - delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 
         if (position_.x < -32 || position_.x > Graphics::SCREEN_WIDTH)
                 dead_ = true;

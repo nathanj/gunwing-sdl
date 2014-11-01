@@ -20,7 +20,7 @@ ShrapnelEnemy::ShrapnelEnemy(float x, float y)
         start_position_ = {x, y};
 
         direction_ = {0, 1};
-        speed_ = 2;
+        speed_ = 120;
         health_ = 2000;
         dead_ = false;
 
@@ -55,9 +55,8 @@ void ShrapnelEnemy::update(std::chrono::milliseconds delta)
         if (position_.y < -200)
                 dead_ = true;
 
-        // todo - delta
-        position_.x += direction_.x * speed_;
-        position_.y += direction_.y * speed_;
+        position_.x += direction_.x * speed_ * delta.count() / 1000.0f;
+        position_.y += direction_.y * speed_ * delta.count() / 1000.0f;
 
         if (health_ < 0) {
                 Music::queueSound(Enemy::explosion_);

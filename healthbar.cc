@@ -40,7 +40,6 @@ void HealthBar::draw(Graphics &graphics)
         // outline
         graphics.blit(image_, 0, 0, pos.x, pos.y, image_.w * fade, image_.h / 2,
                       Graphics::BlitFlags::NONE, &color);
-        // todo - extra blit
 
         if (fade == 1) {
                 for (float m : markers_) {
