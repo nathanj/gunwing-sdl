@@ -69,41 +69,37 @@ Texture Graphics::loadImage(SDL_Surface *surface)
         return t;
 }
 
-void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
-                    const BlitOptions &options)
+void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y)
 {
-        blit(texture, src_x, src_y, x, y, options.sprite_w, options.sprite_h,
-             BlitFlags::NONE, &options.color, options.scale_w, options.scale_h,
-             options.rotation);
+        BlitOptions options;
+        blit(texture, src_x, src_y, x, y, options);
 }
 
 void Graphics::blit(const Texture &texture, int src_x, int src_y, int x, int y,
-                    int sprite_w, int sprite_h, BlitFlags flags,
-                    const Color *color, float scale_w, float scale_h,
-                    float angle)
+                    const BlitOptions &options)
 {
         assert(texture.w > 0);
 
-        sprite_w = sprite_w == -1 ? texture.w : sprite_w;
-        sprite_h = sprite_h == -1 ? texture.h : sprite_h;
+        const auto sprite_w = options.sprite_w == -1 ? texture.w : options.sprite_w;
+        const auto sprite_h = options.sprite_h == -1 ? texture.h : options.sprite_h;
+        const auto scale_w = options.scale_w;
+        const auto scale_h = options.scale_h;
+        const auto& color = options.color;
 
-        float sx = src_x * 1.0f / texture.w;
-        float tx = (src_x + sprite_w) * 1.0f / texture.w;
-        float sy = src_y * 1.0f / texture.h;
-        float ty = (src_y + sprite_h) * 1.0f / texture.h;
+        const float sx = src_x * 1.0f / texture.w;
+        const float tx = (src_x + sprite_w) * 1.0f / texture.w;
+        const float sy = src_y * 1.0f / texture.h;
+        const float ty = (src_y + sprite_h) * 1.0f / texture.h;
 
         glBindTexture(GL_TEXTURE_2D, texture.id);
 
         glPushMatrix();
 
         glTranslatef(x + sprite_w / 2, y + sprite_h / 2, 0.0f);
-        glRotatef(angle, 0, 0, 1);
+        glRotatef(options.rotation, 0, 0, 1);
         glTranslatef(-(x + sprite_w / 2), -(y + sprite_h / 2), 0.0f);
 
-        if (color)
-                glColor4f(color->r, color->g, color->b, color->a);
-        else
-                glColor4f(1, 1, 1, 1);
+        glColor4f(color.r, color.g, color.b, color.a);
 
         glBegin(GL_QUADS);
         // Top-left vertex (corner)

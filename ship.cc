@@ -208,10 +208,10 @@ void Ship::draw(Graphics &graphics)
         graphics.blit(image, 0, 0, position_.x, position_.y);
         if (invinicibility_time_.active()) {
                 float fade = invinicibility_time_.percent_remaining();
-                Color color{1, 1, 1, fade};
+                Graphics::BlitOptions options;
+                options.color = Color{1, 1, 1, fade};
                 graphics.blit(image_shield_, 0, 0, position_.x - 8,
-                              position_.y - 8, -1, -1,
-                              Graphics::BlitFlags::NONE, &color);
+                              position_.y - 8, options);
         }
 
         if (bomb_)

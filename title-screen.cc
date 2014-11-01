@@ -23,8 +23,8 @@ void TitleScreen::update(std::chrono::milliseconds delta)
 
 void TitleScreen::draw(Graphics& graphics)
 {
-        auto color = Color{1, 1, 1, alpha_};
+        Graphics::BlitOptions options;
+        options.color = Color{1, 1, 1, alpha_};
         graphics.blit(image_, 0, 0, 0, 0);
-        graphics.blit(image_press_, 0, 0, 0, 250, -1, -1,
-                      Graphics::BlitFlags::NONE, &color);
+        graphics.blit(image_press_, 0, 0, 0, 250, options);
 }

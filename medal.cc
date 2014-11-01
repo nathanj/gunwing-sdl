@@ -63,6 +63,8 @@ void Medal::update(std::chrono::milliseconds delta)
 
 void Medal::draw(Graphics &graphics)
 {
-        graphics.blit(image_, 0, 0, position_.x, position_.y, image_.w,
-                      image_.h);
+        Graphics::BlitOptions options;
+        options.sprite_w = image_.w;
+        options.sprite_h = image_.h;
+        graphics.blit(image_, 0, 0, position_.x, position_.y, options);
 }

@@ -31,15 +31,17 @@ void HealthBar::draw(Graphics &graphics)
         // pos.x += image_.w / 2 * (1 - fade);
         // float len = image_.w * percentage;
 
-        Color color{1, 1, 1, 0.9f};
         // bar
-        graphics.blit(image_, 0, image_.h / 2, pos.x, pos.y,
-                      image_.w * percentage * fade, image_.h / 2,
-                      Graphics::BlitFlags::NONE, &color);
-        color.a = 1;
+        Graphics::BlitOptions options;
+        options.color = Color{1, 1, 1, 0.9f};
+        options.sprite_w = image_.w * percentage * fade;
+        options.sprite_h = image_.h / 2;
+        graphics.blit(image_, 0, image_.h / 2, pos.x, pos.y, options);
+
         // outline
-        graphics.blit(image_, 0, 0, pos.x, pos.y, image_.w * fade, image_.h / 2,
-                      Graphics::BlitFlags::NONE, &color);
+        options.sprite_w = image_.w * fade;
+        options.color.a = 1;
+        graphics.blit(image_, 0, 0, pos.x, pos.y, options);
 
         if (fade == 1) {
                 for (float m : markers_) {

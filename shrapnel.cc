@@ -1,6 +1,7 @@
 #include "shrapnel.h"
 
 #include "utils.h"
+#include "game-state.h"
 
 // static
 Texture Shrapnel::image_;
@@ -26,6 +27,8 @@ void Shrapnel::update(std::chrono::milliseconds delta)
         if (position_.x < -32 || position_.x > Graphics::SCREEN_WIDTH)
                 dead_ = true;
         if (position_.y < -32 || position_.y > Graphics::SCREEN_HEIGHT)
+                dead_ = true;
+        if (GameState::ship->bomb() && collides(*GameState::ship->bomb()))
                 dead_ = true;
 }
 

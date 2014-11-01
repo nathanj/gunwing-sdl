@@ -16,20 +16,25 @@ void FontScore::draw(Graphics &graphics, int score, float x, float y)
         snprintf(buf, sizeof(buf), "%09d", score);
         x -= width_;
         int first = 0;
+        Graphics::BlitOptions options, options2;
+        options.color = Color{1, 1, 1, 1};
+        options.sprite_h = height_;
+        options.sprite_w = width_;
+        options2.color = Color{0.3f, 0.3f, 0.3f, 0.2f};
+        options2.sprite_h = height_;
+        options2.sprite_w = width_;
         for (char c : std::string(buf)) {
                 x += width_;
                 first++;
                 if (c == ' ')
                         continue;
                 int n = c - '0';
-                Color color1{1, 1, 1, 1};
-                Color color2{0.3f, 0.3f, 0.3f, 0.2f};
                 if (first < 4)
-                        color1 = {1, 0.9f, 0.9f, 1};
+                        options.color = {1, 0.9f, 0.9f, 1};
+                else
+                        options.color = {1, 1, 1, 1};
 
-                graphics.blit(image_, n * width_, 0, x + 2, y + 2, width_,
-                              height_, Graphics::BlitFlags::NONE, &color2);
-                graphics.blit(image_, n * width_, 0, x, y, width_, height_,
-                              Graphics::BlitFlags::NONE, &color1);
+                graphics.blit(image_, n * width_, 0, x + 2, y + 2, options2);
+                graphics.blit(image_, n * width_, 0, x, y, options);
         }
 }

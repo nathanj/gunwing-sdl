@@ -25,7 +25,7 @@ void Warning::update(std::chrono::milliseconds delta)
 
 void Warning::draw(Graphics &graphics)
 {
-        Color color{1, 1, 1, alpha_};
-        graphics.blit(image_, 0, 0, 60, 100, -1, -1, Graphics::BlitFlags::NONE,
-                      &color);
+        Graphics::BlitOptions options;
+        options.color = Color{1, 1, 1, alpha_};
+        graphics.blit(image_, 0, 0, 60, 100, options);
 }

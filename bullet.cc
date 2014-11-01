@@ -34,6 +34,8 @@ void Bullet::update(std::chrono::milliseconds delta)
                 dead_ = true;
         if (position_.y < -32 || position_.y > Graphics::SCREEN_HEIGHT)
                 dead_ = true;
+        if (GameState::ship->bomb() && collides(*GameState::ship->bomb()))
+                dead_ = true;
 }
 
 void Bullet::draw(Graphics &graphics)

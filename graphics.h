@@ -22,11 +22,6 @@ struct Color
 class Graphics
 {
   public:
-        enum class BlitFlags
-        {
-                NONE = 1 << 0, HORIZONTAL_FLIP = 1 << 1, VERTICAL_FLIP = 1 << 2,
-        };
-
         struct BlitOptions
         {
                 int sprite_w{-1};
@@ -40,10 +35,7 @@ class Graphics
         Graphics(SDL_Window *win);
         Texture loadImage(const std::string &file);
         Texture loadImage(SDL_Surface *surface);
-        void blit(const Texture &texture, int src_x, int src_y, int x, int y,
-                  int sprite_w = -1, int sprite_h = -1,
-                  BlitFlags flags = BlitFlags::NONE, const Color *color = NULL,
-                  float scale_w = 1, float scale_h = 1, float angle = 0);
+        void blit(const Texture &texture, int src_x, int src_y, int x, int y);
         void blit(const Texture &texture, int src_x, int src_y, int x, int y,
                   const BlitOptions &options);
         void clear()
@@ -71,16 +63,3 @@ class Graphics
         std::map<std::string, Texture> texture_map;
         SDL_Window *window;
 };
-
-inline Graphics::BlitFlags operator|(Graphics::BlitFlags a,
-                                     Graphics::BlitFlags b)
-{
-        return static_cast<Graphics::BlitFlags>(static_cast<int>(a) |
-                                                static_cast<int>(b));
-}
-inline Graphics::BlitFlags operator&(Graphics::BlitFlags a,
-                                     Graphics::BlitFlags b)
-{
-        return static_cast<Graphics::BlitFlags>(static_cast<int>(a) &
-                                                static_cast<int>(b));
-}

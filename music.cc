@@ -69,6 +69,7 @@ bool playMusic(const std::string& filename, std::chrono::milliseconds fade)
 {
         freeMusic();
         printf("playing music %s\n", filename.c_str());
+        return true;
         music_ = Mix_LoadMUS(filename.c_str());
         if (!music_) {
                 printMixError("Mix_LoadMUS");

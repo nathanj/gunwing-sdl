@@ -12,7 +12,7 @@ void Hud::loadContent(Graphics &graphics)
         image_medal_ = graphics.loadImage("medal.png");
 }
 
-void Hud::update(std::chrono::milliseconds delta)
+void Hud::update(std::chrono::milliseconds)
 {
         auto target_alpha = 1.f;
         if (GameState::ship->position().x < 70 &&
@@ -36,8 +36,10 @@ void Hud::drawLives(Graphics &graphics)
         auto pos = Vector<float>{10.f, 30.f};
         for (int i = 0; i < GameState::ship->lives(); i++) {
                 const Texture &img = Ship::image_;
-                graphics.blit(img, 0, 0, pos.x, pos.y, -1, -1,
-                              Graphics::BlitFlags::NONE, NULL, 0.75f, 0.75f);
+                Graphics::BlitOptions options;
+                options.scale_h = 0.75;
+                options.scale_w = 0.75;
+                graphics.blit(img, 0, 0, pos.x, pos.y, options);
                 pos.x += 25.f;
         }
 }
@@ -50,11 +52,11 @@ void Hud::drawMedals(Graphics &graphics)
 
 void Hud::drawBombs(Graphics &graphics)
 {
-        auto color = Color{1, 1, 1, bomb_current_alpha_};
         auto pos = Vector<float>{0.f, Graphics::SCREEN_HEIGHT - 48.f};
+        Graphics::BlitOptions options;
+        options.color = Color{1, 1, 1, bomb_current_alpha_};
         for (int i = 0; i < GameState::ship->bombs(); i++) {
-                graphics.blit(image_bomb_, 0, 0, pos.x, pos.y, -1, -1,
-                              Graphics::BlitFlags::NONE, &color);
+                graphics.blit(image_bomb_, 0, 0, pos.x, pos.y, options);
                 pos.x += 24.f;
         }
 }
